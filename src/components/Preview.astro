@@ -1,0 +1,132 @@
+---
+/**
+ * A fake browser frame. The tab shows the page's <title>, so students can see
+ * the difference between title and h1. The iframe never runs scripts.
+ */
+---
+<section class="preview panel" aria-labelledby="preview-heading">
+  <h2 id="preview-heading" class="visually-hidden">Preview</h2>
+  <div class="chrome" aria-hidden="true">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="tab">
+      <span class="tab-icon"></span>
+      <span class="tab-title" data-tab-title>Untitled</span>
+    </span>
+  </div>
+  <div class="address" aria-hidden="true">
+    <span class="lock"></span>my-hobby-page.html
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-tab-announce></p>
+  <div class="frame-wrap">
+    <iframe data-preview sandbox="allow-same-origin" title="Preview of your page" referrerpolicy="no-referrer"></iframe>
+    <iframe data-twin sandbox="allow-same-origin" title="Unstyled copy used for checking" aria-hidden="true" tabindex="-1" class="twin"></iframe>
+  </div>
+  <p class="link-note" data-link-note hidden role="status"></p>
+</section>
+
+<style>
+  .preview {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  .chrome {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    background: var(--navy);
+    padding: 8px 12px 0;
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+    padding-bottom: 12px;
+  }
+  .dots i {
+    width: 10px;
+    height: 10px;
+    background: #5b6b7d;
+  }
+  .dots i:first-child {
+    background: #d9455f;
+  }
+  .dots i:nth-child(2) {
+    background: var(--gold);
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 70%;
+    background: #f3f6fa;
+    color: var(--navy);
+    padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .tab-icon {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    background: var(--gold);
+    border: 2px solid var(--navy);
+  }
+  .tab-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tab-title.empty {
+    font-style: italic;
+    color: #5b6573;
+  }
+  .address {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f6fa;
+    border-bottom: 1px solid var(--line);
+    padding: 6px 12px 8px;
+    font: 14px var(--mono);
+    color: #3a4654;
+  }
+  .lock {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #5b6573;
+    border-radius: 2px;
+  }
+  .frame-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 220px;
+    background: #fff;
+  }
+  iframe[data-preview] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #fff;
+  }
+  .twin {
+    position: absolute;
+    left: -10000px;
+    top: 0;
+    height: 400px;
+    border: 0;
+    visibility: hidden;
+  }
+  .link-note {
+    margin: 0;
+    padding: 8px 12px;
+    background: var(--cream);
+    border-top: 1px solid var(--cream-line);
+    font-size: 15px;
+    color: #4a3300;
+  }
+</style>

@@ -1,0 +1,213 @@
+---
+import Base from '../../../layouts/Base.astro';
+import HobbyPicker from '../../../components/HobbyPicker.astro';
+import LevelMap from '../../../components/LevelMap.astro';
+import Mascot from '../../../components/Mascot.astro';
+import { config } from '../../../config';
+import type { Lesson } from '../../../lesson-schema';
+import { allLessons } from '../../../lib/lessons';
+import { url } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const lessons = await allLessons();
+  return lessons.map((lesson, i) => ({ params: { lesson: lesson.id }, props: { lesson, number: i + 1 } }));
+}
+
+const { lesson, number } = Astro.props as { lesson: Lesson; number: number };
+const levels = lesson.levels.map((l) => ({ id: l.id, title: l.title }));
+const levelCount = lesson.levels.filter((l) => l.id !== 'boss').length;
+---
+<Base title={lesson.title} current="lesson" description={lesson.summary}>
+  <div class="wrap lesson-page">
+    <section class="card hero">
+      <div class="text">
+        <p class="eyebrow">Year {lesson.year} · Lesson {number} · about {lesson.minutes} minutes</p>
+        <h1>{lesson.title}</h1>
+        <p class="summary">{lesson.summary}</p>
+        <p>{levelCount} levels, then a boss level if you finish early. {config.mascot.name} will cheer you on.</p>
+      </div>
+      <Mascot size={150} mood="happy" />
+    </section>
+
+    <section aria-labelledby="hobby-heading" class="step">
+      <h2 id="hobby-heading"><span class="step-num pixel" aria-hidden="true">1</span> Choose your hobby</h2>
+      <p>Your page will be about this. You can change it later.</p>
+      <HobbyPicker hobbies={lesson.hobbies} />
+    </section>
+
+    <section aria-labelledby="map-heading" class="step" id="map">
+      <h2 id="map-heading"><span class="step-num pixel" aria-hidden="true">2</span> Play the levels</h2>
+      <p>Each level adds to the same page. Clear one to unlock the next.</p>
+      <p class="notice" role="status" data-notice hidden></p>
+      <LevelMap lessonId={lesson.id} levels={levels} label="Level map" />
+      <div class="go">
+        <a class="btn btn-gold btn-big" href={url(`lessons/${lesson.id}/play/`)} data-start aria-disabled="true">Start building</a>
+        <p class="go-note" data-go-note>Choose a hobby first.</p>
+      </div>
+    </section>
+  </div>
+
+  <script type="application/json" id="lesson-meta" set:html={JSON.stringify({ id: lesson.id, levels: levels.map((l) => l.id) })} />
+</Base>
+
+<script>
+  import { applyLevelMap, guardLockedLinks } from '../../../lib/level-map';
+  import { currentIndex, loadProgress, saveProgress, type LevelId } from '../../../lib/progress';
+
+  const meta = JSON.parse(document.getElementById('lesson-meta')!.textContent!) as { id: string; levels: LevelId[] };
+  const progress = loadProgress(meta.id);
+  const picker = document.querySelector<HTMLElement>('[data-hobby-picker]')!;
+  const tiles = Array.from(picker.querySelectorAll<HTMLButtonElement>('.tile'));
+  const own = picker.querySelector<HTMLElement>('[data-own]')!;
+  const ownInput = own.querySelector('input')!;
+  const start = document.querySelector<HTMLAnchorElement>('[data-start]')!;
+  const goNote = document.querySelector<HTMLElement>('[data-go-note]')!;
+  const notice = document.querySelector<HTMLElement>('[data-notice]')!;
+  const known = tiles.map((t) => t.dataset.hobby!);
+  const playHref = start.getAttribute('href')!;
+
+  function render() {
+    const hobby = progress.hobby;
+    const tile = hobby === null ? null : known.includes(hobby) ? hobby : 'other';
+    tiles.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.hobby === tile)));
+    own.hidden = tile !== 'other';
+    if (tile === 'other' && hobby !== 'other' && document.activeElement !== ownInput) ownInput.value = hobby ?? '';
+
+    applyLevelMap(document, meta.levels, progress.completed);
+    const index = currentIndex(meta.levels, progress.completed);
+    const started = progress.code !== null || progress.completed.length > 0;
+    const id = meta.levels[index];
+    start.href = `${playHref}#level-${id}`;
+    if (hobby === null) {
+      start.setAttribute('aria-disabled', 'true');
+      goNote.textContent = 'Choose a hobby first.';
+      goNote.hidden = false;
+    } else {
+      start.removeAttribute('aria-disabled');
+      start.textContent = started ? `Carry on: ${id === 'boss' ? 'boss level' : `level ${id}`}` : 'Start building';
+      goNote.hidden = true;
+    }
+  }
+
+  tiles.forEach((tile) =>
+    tile.addEventListener('click', () => {
+      const h = tile.dataset.hobby!;
+      progress.hobby = h === 'other' ? ownInput.value.trim() || 'other' : h;
+      saveProgress(meta.id, progress);
+      render();
+      if (h === 'other') ownInput.focus();
+    }),
+  );
+  ownInput.addEventListener('input', () => {
+    progress.hobby = ownInput.value.trim() || 'other';
+    saveProgress(meta.id, progress);
+    render();
+  });
+  start.addEventListener('click', (e) => {
+    if (start.getAttribute('aria-disabled') === 'true') {
+      e.preventDefault();
+      tiles[0].focus();
+    }
+  });
+
+  guardLockedLinks(document, (id) => {
+    notice.hidden = false;
+    notice.textContent = `${id === 'boss' ? 'The boss level' : `Level ${id}`} is locked. Finish the level before it first.`;
+  });
+  document.querySelectorAll<HTMLAnchorElement>('[data-level-map] .level-block').forEach((block) =>
+    block.addEventListener('click', (e) => {
+      if (progress.hobby === null && block.dataset.state !== 'locked') {
+        e.preventDefault();
+        notice.hidden = false;
+        notice.textContent = 'Choose your hobby first, then start level 1.';
+        tiles[0].focus();
+      }
+    }),
+  );
+
+  const params = new URLSearchParams(location.search);
+  const locked = params.get('locked');
+  if (locked) {
+    notice.hidden = false;
+    notice.textContent = `${locked === 'boss' ? 'The boss level' : `Level ${locked}`} is still locked. Carry on from the level map below.`;
+  } else if (params.get('need') === 'hobby') {
+    notice.hidden = false;
+    notice.textContent = 'Choose your hobby first, then start building.';
+    tiles[0].focus();
+  }
+  render();
+</script>
+
+<style>
+  .lesson-page {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hero h1 {
+    font-size: 44px;
+  }
+  .summary {
+    font-size: 20px;
+    color: #3a4654;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step h2 {
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 14px;
+  }
+  .notice {
+    background: var(--cream);
+    border: 2px solid var(--cream-line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: #4a3300;
+    font-weight: 500;
+  }
+  .go {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .go-note {
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .hero {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+    .hero h1 {
+      font-size: 32px;
+    }
+  }
+</style>

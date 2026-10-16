@@ -1,0 +1,87 @@
+---
+/** Hobby tiles plus "type your own". The choice is saved in localStorage. */
+import { url } from '../lib/url';
+
+interface Props {
+  hobbies: string[];
+}
+const { hobbies } = Astro.props;
+const label = (h: string) => h[0].toUpperCase() + h.slice(1);
+---
+<div class="hobby-picker" data-hobby-picker>
+  <div class="tiles" role="group" aria-label="Hobbies">
+    {
+      hobbies.map((h) => (
+        <button type="button" class="tile" data-hobby={h} aria-pressed="false">
+          <img src={url(`images/hobbies/${h}-1.png`)} alt="" width="120" height="90" loading="lazy" />
+          <span>{h === 'other' ? 'Something else' : label(h)}</span>
+        </button>
+      ))
+    }
+  </div>
+  <div class="own" data-own hidden>
+    <label for="own-hobby">Type your hobby</label>
+    <input id="own-hobby" type="text" maxlength="30" autocomplete="off" spellcheck="true" placeholder="e.g. skateboarding" />
+    <p class="note">Leave it blank and your headings can be about anything.</p>
+  </div>
+</div>
+
+<style>
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 10px 12px;
+    border: 3px solid var(--navy);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--navy);
+    font: 600 17px var(--body);
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--navy);
+    min-height: 44px;
+  }
+  .tile img {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    border: 2px solid var(--navy);
+  }
+  .tile:hover {
+    background: #f3f7fb;
+  }
+  .tile[aria-pressed='true'] {
+    background: var(--gold);
+    box-shadow: inset -4px -4px 0 var(--gold-dark), inset 4px 4px 0 var(--gold-light), 0 4px 0 var(--navy);
+  }
+  .tile[aria-pressed='true'] span::before {
+    content: '✓ ';
+  }
+  .own {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 420px;
+  }
+  .own label {
+    font-weight: 600;
+  }
+  .own input {
+    font: 18px var(--body);
+    padding: 10px 14px;
+    min-height: 48px;
+    border: 3px solid var(--navy);
+    border-radius: 4px;
+  }
+  .note {
+    font-size: 15px;
+    color: var(--muted);
+  }
+</style>

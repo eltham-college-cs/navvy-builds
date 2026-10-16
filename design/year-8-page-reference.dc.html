@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Year 8 · Counting with for loops</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F7F8FA}
+a{color:#2A5A8C}a:hover{color:#0A1B2E}
+@keyframes rise{0%{transform:translateY(8px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.rise{animation:rise .5s ease both}
+@media (prefers-reduced-motion:reduce){.rise{animation:none}}
+</style>
+</helmet>
+<div style="font-family: Lexend, 'Segoe UI', sans-serif; color: #1A1D21; font-size: 18px; line-height: 1.6; background: #F7F8FA; min-height: 100vh">
+
+<header style="background: #0A1B2E; color: #FFFFFF">
+<div style="max-width: 1120px; margin: 0 auto; padding: 14px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; color: #FFFFFF; text-decoration: none">
+<span style="width: 40px; height: 40px; border-radius: 10px; background: #DDA93E; color: #0A1B2E; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px">EC</span>
+<span style="font-size: 20px; font-weight: 600">Python at Home</span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 6px">
+<a href="#top" style="color: #0A1B2E; background: #DDA93E; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px">Year 8</a>
+<a href="#top" style="color: #FFFFFF; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-size: 16px">Error decoder</a>
+<a href="#top" style="color: #FFFFFF; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-size: 16px">Key words</a>
+<a href="#top" style="color: #FFFFFF; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-size: 16px">For grown-ups</a>
+</nav>
+</div>
+</header>
+
+<main style="max-width: 1120px; margin: 0 auto; padding: 32px; display: flex; flex-direction: column; gap: 36px">
+
+<section style="display: flex; flex-direction: column; gap: 12px; background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 20px; padding: 36px">
+<span style="font-size: 14px; font-weight: 600; letter-spacing: .08em; color: #2A5A8C">YEAR 8 · ITERATION · LESSON 2</span>
+<h1 style="margin: 0; font-weight: 600; font-size: 48px; line-height: 1.1; color: #0A1B2E">Counting with for loops</h1>
+<p style="margin: 0; font-size: 20px; color: #3A4654">Make the computer repeat a job a set number of times, without copying and pasting.</p>
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap" aria-label="Progress: step 2 of 6">
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #DDA93E"></span>
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #DDA93E"></span>
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #D7E3EF"></span>
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #D7E3EF"></span>
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #D7E3EF"></span>
+<span style="width: 32px; height: 8px; border-radius: 4px; background: #D7E3EF"></span>
+<span style="font-size: 15px; color: #555D68; margin-left: 6px">About 15 minutes</span>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-weight: 600; font-size: 32px; color: #0A1B2E"><span style="color: #DDA93E">1</span>  The big idea</h2>
+<p style="margin: 0">A <strong>for loop</strong> is like a coach saying "run 3 laps". The coach counts the laps for you, and <strong>i</strong> holds the lap number each time round.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-weight: 600; font-size: 32px; color: #0A1B2E"><span style="color: #DDA93E">2</span>  Predict, then run</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 3 1 440px; min-width: 0; background: #0A1B2E; border-radius: 16px; overflow: hidden">
+<pre style="margin: 0; padding: 22px; font-family: 'JetBrains Mono', monospace; font-size: 19px; line-height: 1.7; color: #FFFFFF; overflow-x: auto"><span style="color: #DDA93E">for</span> i <span style="color: #DDA93E">in</span> <span style="color: #7FB4E8">range</span>(1, 4):
+    <span style="color: #7FB4E8">print</span>(<span style="color: #9FDDB8">"Round"</span>, i)</pre>
+<div style="display: flex; gap: 10px; padding: 0 22px 22px">
+<button type="button" style="font-family: Lexend, sans-serif; font-size: 17px; font-weight: 600; background: #FFFFFF; color: #0A1B2E; border: 0; border-radius: 12px; padding: 12px 22px; cursor: pointer">▶ Run</button>
+<button type="button" style="font-family: Lexend, sans-serif; font-size: 17px; font-weight: 600; background: #DDA93E; color: #0A1B2E; border: 0; border-radius: 12px; padding: 12px 22px; cursor: pointer">✓ Check</button>
+</div>
+</div>
+<div style="flex: 2 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 600; letter-spacing: .06em; color: #555D68">TRACE IT</span>
+<table style="border-collapse: collapse; font-size: 17px; width: 100%">
+<thead><tr><th style="text-align: left; padding: 8px; border-bottom: 2px solid #D7E3EF; color: #2A5A8C">Loop</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid #D7E3EF; color: #2A5A8C">i</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid #D7E3EF; color: #2A5A8C">Output</th></tr></thead>
+<tbody>
+<tr class="rise" style="animation-delay: .2s"><td style="padding: 8px; border-bottom: 1px solid #EEF2F7">1st</td><td style="padding: 8px; border-bottom: 1px solid #EEF2F7; font-family: 'JetBrains Mono', monospace">1</td><td style="padding: 8px; border-bottom: 1px solid #EEF2F7; font-family: 'JetBrains Mono', monospace">Round<span style="color: #8A96A3">·</span>1</td></tr>
+<tr class="rise" style="animation-delay: .6s"><td style="padding: 8px; border-bottom: 1px solid #EEF2F7">2nd</td><td style="padding: 8px; border-bottom: 1px solid #EEF2F7; font-family: 'JetBrains Mono', monospace">2</td><td style="padding: 8px; border-bottom: 1px solid #EEF2F7; font-family: 'JetBrains Mono', monospace">?</td></tr>
+<tr class="rise" style="animation-delay: 1s"><td style="padding: 8px">3rd</td><td style="padding: 8px; font-family: 'JetBrains Mono', monospace">?</td><td style="padding: 8px; font-family: 'JetBrains Mono', monospace">?</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-weight: 600; font-size: 32px; color: #0A1B2E"><span style="color: #DDA93E">3</span>  Test results</h2>
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+<span style="display: flex; gap: 6px" aria-label="2 of 3 tests passed">
+<span style="width: 56px; height: 12px; border-radius: 6px; background: #1F7A4D"></span>
+<span style="width: 56px; height: 12px; border-radius: 6px; background: #1F7A4D"></span>
+<span style="width: 56px; height: 12px; border-radius: 6px; background: #D9A21E"></span>
+</span>
+<span style="font-weight: 600; color: #0A1B2E">2 of 3 tests passed</span>
+</div>
+<div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 12px; align-items: center; font-size: 16px">
+<span style="color: #555D68">Expected</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 18px">Round<span style="color: #8A96A3">·</span>3</span>
+<span style="color: #555D68">You got</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 18px">Round<span style="color: #8A96A3">·</span><span style="background: #FCE9E7; color: #B3261E; border-radius: 4px; padding: 0 2px">·</span>3</span>
+</div>
+<div style="display: flex; align-items: center; gap: 14px; background: #FDF1D9; border: 1px solid #F0DDAA; border-radius: 14px; padding: 12px 16px">
+<dc-import name="Monty" mood="tryagain" size="72" hint-size="72px,72px"></dc-import>
+<p style="margin: 0; font-size: 16px; color: #4A3300"><strong>Hint:</strong> the comma in print() already adds a space. You've added one inside the quotes too.</p>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-weight: 600; font-size: 32px; color: #0A1B2E"><span style="color: #DDA93E">4</span>  Quiz me</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<span>How many times does <span style="font-family: 'JetBrains Mono', monospace">range(1, 4)</span> loop?</span>
+<button type="button" style="align-self: flex-start; font-family: Lexend, sans-serif; font-size: 15px; background: #EEF4FB; color: #0A1B2E; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer">Reveal</button>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<span>What is the last value of <span style="font-family: 'JetBrains Mono', monospace">i</span>?</span>
+<button type="button" style="align-self: flex-start; font-family: Lexend, sans-serif; font-size: 15px; background: #EEF4FB; color: #0A1B2E; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer">Reveal</button>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<span>Why is the print line indented?</span>
+<button type="button" style="align-self: flex-start; font-family: Lexend, sans-serif; font-size: 15px; background: #EEF4FB; color: #0A1B2E; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer">Reveal</button>
+</div>
+</div>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+{
+  "id": "my-hobby-page",
+  "title": "My hobby page",
+  "year": 8,
+  "minutes": 30,
+  "summary": "Build a web page about your hobby, one level at a time.",
+  "hobbies": [
+    "football",
+    "gaming",
+    "music",
+    "art",
+    "cooking",
+    "dance",
+    "reading",
+    "animals",
+    "swimming",
+    "other"
+  ],
+  "starter": "<!-- Build your {hobby} page here. Start with the doctype. -->\n",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Foundations",
+      "intro": "Every web page has the same skeleton. Type it yourself.",
+      "goals": [
+        {
+          "text": "Start with <!DOCTYPE html>",
+          "checks": [
+            {
+              "type": "source-doctype"
+            }
+          ],
+          "hints": [
+            "The doctype is the very first line.",
+            "Type it exactly: <!DOCTYPE html>"
+          ]
+        },
+        {
+          "text": "Add html, head and body tags, each opened and closed",
+          "checks": [
+            {
+              "type": "source-balanced",
+              "tags": [
+                "html",
+                "head",
+                "body"
+              ]
+            },
+            {
+              "type": "source-inside",
+              "tag": "head",
+              "parent": "html"
+            },
+            {
+              "type": "source-inside",
+              "tag": "body",
+              "parent": "html"
+            }
+          ],
+          "hints": [
+            "head and body both sit inside html.",
+            "head comes first, then body."
+          ]
+        },
+        {
+          "text": "Give the page a title that mentions {hobby}",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "title",
+              "parent": "head"
+            },
+            {
+              "type": "text",
+              "selector": "title",
+              "containsHobby": true
+            }
+          ],
+          "hints": [
+            "The title goes inside head.",
+            "Look at the tab above the preview: that's where the title shows."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Headings",
+      "intro": "Headings are like the chapter titles in a book.",
+      "goals": [
+        {
+          "text": "Add one h1 that mentions {hobby}",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "body h1",
+              "min": 1,
+              "max": 1
+            },
+            {
+              "type": "text",
+              "selector": "h1",
+              "containsHobby": true
+            }
+          ],
+          "hints": [
+            "A page has one h1, like a book has one title.",
+            "e.g. <h1>My love of {hobby}</h1>"
+          ]
+        },
+        {
+          "text": "Add two h2 section headings",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "body h2",
+              "min": 2
+            }
+          ],
+          "hints": [
+            "Ideas: How I started, What I need, My top 3."
+          ]
+        },
+        {
+          "text": "Add an h3 under one of your h2s",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "body h3",
+              "min": 1
+            },
+            {
+              "type": "headingOrder"
+            }
+          ],
+          "hints": [
+            "Go down one level at a time: h1, then h2, then h3."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Paragraphs",
+      "intro": "Paragraphs hold the sentences on your page.",
+      "goals": [
+        {
+          "text": "Write at least two paragraphs",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "body p",
+              "min": 2
+            }
+          ],
+          "hints": [
+            "Each paragraph goes inside its own <p> and </p>."
+          ]
+        },
+        {
+          "text": "Each paragraph has at least 8 words",
+          "checks": [
+            {
+              "type": "text",
+              "selector": "p",
+              "minWords": 8
+            }
+          ],
+          "hints": [
+            "Tell the reader why you enjoy {hobby}."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Lists",
+      "intro": "Use ul when order doesn't matter, ol when it does.",
+      "goals": [
+        {
+          "text": "Add a ul of 3 or more things you need for {hobby}",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "ul > li",
+              "min": 3
+            }
+          ],
+          "hints": [
+            "Each item is an <li> inside the <ul>."
+          ]
+        },
+        {
+          "text": "Add an ol of your top 3",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "ol > li",
+              "min": 3
+            }
+          ],
+          "hints": [
+            "ol numbers the items for you."
+          ]
+        },
+        {
+          "text": "Every li is inside a list",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "li",
+              "parent": "ul|ol"
+            }
+          ],
+          "hints": [
+            "Check each <li> sits between <ul> and </ul> or <ol> and </ol>."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Links",
+      "intro": "Links take the reader somewhere else.",
+      "goals": [
+        {
+          "text": "Add a link to a website about {hobby}",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "a[href]"
+            },
+            {
+              "type": "attr",
+              "selector": "a",
+              "attr": "href",
+              "startsWith": "https://"
+            }
+          ],
+          "hints": [
+            "<a href=\"https://...\">link text</a>",
+            "Web addresses start with https://"
+          ]
+        },
+        {
+          "text": "Make the link text say where it goes",
+          "checks": [
+            {
+              "type": "text",
+              "selector": "a",
+              "notEmpty": true
+            },
+            {
+              "type": "attr",
+              "selector": "a",
+              "attr": "textContent",
+              "notOneOf": [
+                "click here",
+                "here",
+                "link",
+                "click"
+              ]
+            }
+          ],
+          "hints": [
+            "'Visit the FA website' is better than 'click here'."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Images",
+      "intro": "Pictures need alt text so everyone knows what they show.",
+      "goals": [
+        {
+          "text": "Add an img with a src",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "img"
+            },
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "src",
+              "notEmpty": true
+            }
+          ],
+          "hints": [
+            "Copy a path from the image library, e.g. images/{hobby}-1.png",
+            "img has no closing tag."
+          ]
+        },
+        {
+          "text": "Describe the picture in alt",
+          "checks": [
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "alt",
+              "notEmpty": true,
+              "notOneOf": [
+                "image",
+                "picture",
+                "photo",
+                "img"
+              ]
+            },
+            {
+              "type": "text",
+              "selector": "img@alt",
+              "minWords": 3
+            }
+          ],
+          "hints": [
+            "Imagine describing the picture over the phone."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Style it",
+      "intro": "CSS changes how your page looks. It goes in a <style> tag inside head.",
+      "goals": [
+        {
+          "text": "Add a <style> element inside head",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "style",
+              "parent": "head"
+            },
+            {
+              "type": "css-syntax"
+            }
+          ],
+          "hints": [
+            "Rules look like: h1 { color: navy; }"
+          ]
+        },
+        {
+          "text": "Change the page background colour",
+          "checks": [
+            {
+              "type": "style",
+              "selector": "body",
+              "property": "background-color",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "CSS uses American spelling: background-color."
+          ]
+        },
+        {
+          "text": "Change the h1 colour and centre it",
+          "checks": [
+            {
+              "type": "style",
+              "selector": "h1",
+              "property": "color",
+              "notDefault": true
+            },
+            {
+              "type": "style",
+              "selector": "h1",
+              "property": "text-align",
+              "equals": "center"
+            }
+          ],
+          "hints": [
+            "text-align: center; (American spelling)"
+          ]
+        },
+        {
+          "text": "Change the font family and size of your paragraphs",
+          "checks": [
+            {
+              "type": "style",
+              "selector": "p",
+              "property": "font-family",
+              "notDefault": true
+            },
+            {
+              "type": "style",
+              "selector": "p",
+              "property": "font-size",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "Try font-family: Arial, sans-serif; and font-size: 18px;"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boss",
+      "title": "Boss level",
+      "intro": "Show off everything you know.",
+      "goals": [
+        {
+          "text": "Use h4, h5 or h6 without skipping a level",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "h4, h5, h6",
+              "min": 1
+            },
+            {
+              "type": "headingOrder"
+            }
+          ],
+          "hints": [
+            "h4 must come under an h3."
+          ]
+        },
+        {
+          "text": "Style your list items and links",
+          "checks": [
+            {
+              "type": "style",
+              "selector": "li",
+              "property": "color",
+              "notDefault": true
+            },
+            {
+              "type": "style",
+              "selector": "a",
+              "property": "color",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "Selectors can be any tag name: li { } a { }"
+          ]
+        },
+        {
+          "text": "Keep every earlier goal passing",
+          "checks": [
+            {
+              "type": "allPrevious"
+            }
+          ],
+          "hints": [
+            "Scroll back through the level map to see what's broken."
+          ]
+        }
+      ]
+    }
+  ]
+}

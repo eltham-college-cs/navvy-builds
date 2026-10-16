@@ -1,0 +1,69 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Builder from '../../../components/Builder.astro';
+import LevelMap from '../../../components/LevelMap.astro';
+import { config } from '../../../config';
+import type { Lesson } from '../../../lesson-schema';
+import { allLessons } from '../../../lib/lessons';
+import { url } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const lessons = await allLessons();
+  return lessons.map((lesson) => ({ params: { lesson: lesson.id }, props: { lesson } }));
+}
+
+const { lesson } = Astro.props as { lesson: Lesson };
+const levels = lesson.levels.map((l) => ({ id: l.id, title: l.title }));
+const data = {
+  lesson,
+  lessonPath: url(`lessons/${lesson.id}/`),
+  imagesPath: url('images/hobbies/'),
+  mascotName: config.mascot.name,
+  imagesPerHobby: config.imagesPerHobby,
+};
+---
+<Base title={lesson.title} current="lesson" app description={lesson.summary}>
+  <Fragment slot="header">
+    <a class="lesson-link" href={data.lessonPath}>{lesson.title}</a>
+    <LevelMap lessonId={lesson.id} levels={levels} compact label="Levels in this lesson" />
+  </Fragment>
+  <Builder />
+  <script type="application/json" id="builder-data" set:html={JSON.stringify(data)} />
+</Base>
+
+<script>
+  import { startBuilder } from '../../../lib/builder';
+
+  const raw = JSON.parse(document.getElementById('builder-data')!.textContent!);
+  const abs = (path: string) => new URL(path, location.origin).href;
+  startBuilder({
+    lesson: raw.lesson,
+    siteUrl: abs(import.meta.env.BASE_URL.replace(/\/?$/, '/')),
+    libraryUrl: abs(raw.imagesPath),
+    lessonUrl: raw.lessonPath,
+    mascotName: raw.mascotName,
+    imagesPerHobby: raw.imagesPerHobby,
+  });
+</script>
+
+<style>
+  .lesson-link {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 8px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .lesson-link:hover {
+    color: var(--gold);
+    text-decoration: underline;
+  }
+  @media (max-width: 1100px) {
+    .lesson-link {
+      display: none;
+    }
+  }
+</style>

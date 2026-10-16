@@ -1,0 +1,26 @@
+---
+/** The logo: a gold cube with </> inside. Used in the header, the home scene and as the favicon. */
+import { cubeSvg } from '../lib/cube';
+
+interface Props {
+  size?: number;
+  /** Outline colour; white reads better on the navy header. */
+  outline?: string;
+  label?: string;
+  class?: string;
+}
+const { size = 40, outline, label, class: className = '' } = Astro.props;
+---
+<span class:list={['logo-cube', className]} style={`width:${size}px;height:${size}px`} set:html={cubeSvg({ outline, label })} />
+
+<style>
+  .logo-cube {
+    display: inline-block;
+    flex: none;
+  }
+  .logo-cube :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

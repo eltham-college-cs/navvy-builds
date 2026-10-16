@@ -1,0 +1,235 @@
+---
+import Base from '../layouts/Base.astro';
+
+const tags = [
+  ['<!DOCTYPE html>', 'The very first line. Tells the browser this is a modern web page.'],
+  ['<html> … </html>', 'Wraps the whole page.'],
+  ['<head> … </head>', 'Information about the page. Holds title and style. Nothing here shows on the page.'],
+  ['<title> … </title>', 'The text on the browser tab. Goes inside head.'],
+  ['<body> … </body>', 'Everything you can see on the page.'],
+  ['<h1> … </h1> to <h6>', 'Headings. One h1 per page, then h2 for sections, h3 under those, and so on.'],
+  ['<p> … </p>', 'A paragraph of text.'],
+  ['<ul> <li> … </li> </ul>', 'A bulleted list, for when order doesn’t matter.'],
+  ['<ol> <li> … </li> </ol>', 'A numbered list, for when order matters.'],
+  ['<a href="https://…"> … </a>', 'A link. The words in between say where it goes.'],
+  ['<img src="…" alt="…">', 'A picture. alt describes it for people who can’t see it. No closing tag.'],
+  ['<style> … </style>', 'CSS rules for the page. Goes inside head.'],
+];
+
+const props = [
+  ['color', 'Text colour', 'h1 { color: navy; }'],
+  ['background-color', 'Background colour', 'body { background-color: lightyellow; }'],
+  ['font-family', 'The font', 'p { font-family: Arial, sans-serif; }'],
+  ['font-size', 'How big the text is', 'p { font-size: 18px; }'],
+  ['text-align', 'Left, right or center', 'h1 { text-align: center; }'],
+];
+
+const mistakes = [
+  ['Writing colour or centre', 'CSS uses American spelling: color, background-color, center.'],
+  ['Mixing up title and h1', 'The title shows on the tab. The h1 shows on the page.'],
+  ['Putting headings inside head', 'head holds information about the page. Put visible content in body.'],
+  ['An li on its own', 'Every li needs to sit inside a ul or ol.'],
+  ['A link without https://', 'Web addresses need https:// at the start.'],
+  ['Link text that says “click here”', 'Say where the link goes, e.g. “Visit the FA website”.'],
+  ['alt="image" or no alt', 'Describe the picture for someone who can’t see it.'],
+  ['More than one h1', 'A page has one h1, like a book has one title.'],
+  ['Jumping from h2 to h4', 'Go down one level at a time.'],
+  ['Forgetting ; between CSS lines', 'Each property: value; pair ends with a semicolon.'],
+  ['Writing </img>', 'img has no closing tag.'],
+];
+---
+<Base title="Help" current="help" description="HTML tags, CSS properties and common mistakes.">
+  <div class="wrap help">
+    <header class="top">
+      <p class="eyebrow">Cheat sheet</p>
+      <h1>Help</h1>
+      <p>Everything you need for your hobby page, in one place.</p>
+      <nav aria-label="On this page" class="toc">
+        <a href="#tags">HTML tags</a>
+        <a href="#css">CSS</a>
+        <a href="#mistakes">Common mistakes</a>
+        <a href="#keys">Keyboard</a>
+      </nav>
+    </header>
+
+    <section id="tags" aria-labelledby="tags-h">
+      <h2 id="tags-h">HTML tags</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Tag</th><th scope="col">What it does</th></tr></thead>
+          <tbody>
+            {tags.map(([t, d]) => <tr><td><code>{t}</code></td><td>{d}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <h3>The page skeleton</h3>
+      <pre class="code"><code>{`<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tab text goes here</title>
+  </head>
+  <body>
+    Everything you can see goes here
+  </body>
+</html>`}</code></pre>
+    </section>
+
+    <section id="css" aria-labelledby="css-h">
+      <h2 id="css-h">CSS</h2>
+      <p>A CSS rule picks some elements, then changes how they look:</p>
+      <pre class="code rule"><code><span class="sel">selector</span> {'{'} <span class="prop">property</span>: <span class="val">value</span>; {'}'}</code></pre>
+      <p>Put your rules inside <code>&lt;style&gt;</code> in the head. The selector can be any tag name: <code>body</code>, <code>h1</code>, <code>p</code>, <code>li</code>, <code>a</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Property</th><th scope="col">Changes</th><th scope="col">Example</th></tr></thead>
+          <tbody>
+            {props.map(([p, d, e]) => <tr><td><code>{p}</code></td><td>{d}</td><td><code>{e}</code></td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Colours can be names like <code>navy</code>, <code>tomato</code> or <code>lightyellow</code>, or codes like <code>#F2B533</code>.</p>
+    </section>
+
+    <section id="mistakes" aria-labelledby="mistakes-h">
+      <h2 id="mistakes-h">Common mistakes</h2>
+      <dl class="mistakes">
+        {mistakes.map(([m, fix]) => <div><dt>{m}</dt><dd>{fix}</dd></div>)}
+      </dl>
+    </section>
+
+    <section id="keys" aria-labelledby="keys-h">
+      <h2 id="keys-h">Using the keyboard</h2>
+      <ul>
+        <li>In the code editor, <kbd>Tab</kbd> indents your code.</li>
+        <li>Press <kbd>Esc</kbd> to leave the editor and move to <em>Check my page</em>.</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Z</kbd> undoes your last change.</li>
+      </ul>
+      <p class="note">Your work is saved in this browser only. Nothing you type is sent anywhere.</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .help {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 960px;
+  }
+  .top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .top h1 {
+    font-size: 44px;
+  }
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .toc a {
+    padding: 10px 14px;
+    border: 2px solid var(--navy);
+    border-radius: 4px;
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 600;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .toc a:hover {
+    background: var(--gold);
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  h3 {
+    font-size: 22px;
+    margin-top: 8px;
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    color: #2a5a8c;
+    font-size: 16px;
+  }
+  td code {
+    white-space: nowrap;
+  }
+  .code {
+    margin: 0;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 12px;
+    padding: 18px 22px;
+    overflow-x: auto;
+    font: 17px/1.7 var(--mono);
+  }
+  .code code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  .rule .sel {
+    color: var(--gold);
+  }
+  .rule .prop {
+    color: #7fb4e8;
+  }
+  .rule .val {
+    color: #9fddb8;
+  }
+  .mistakes {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .mistakes div {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--gold);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .mistakes dt {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .mistakes dd {
+    margin: 4px 0 0;
+  }
+  kbd {
+    border: 2px solid var(--navy);
+    border-bottom-width: 4px;
+    border-radius: 4px;
+    padding: 0 6px;
+    background: #fff;
+  }
+  .note {
+    color: var(--muted);
+  }
+</style>

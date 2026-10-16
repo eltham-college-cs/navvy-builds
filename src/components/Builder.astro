@@ -1,0 +1,257 @@
+---
+/** Editor + preview + checks + feedback. Behaviour lives in builder.ts. */
+import ChecklistPanel from './ChecklistPanel.astro';
+import Mascot from './Mascot.astro';
+import Preview from './Preview.astro';
+import { config } from '../config';
+---
+<div class="builder" data-builder>
+  <div class="col left">
+    <ChecklistPanel />
+
+    <section class="panel editor-panel" aria-labelledby="editor-heading">
+      <div class="editor-head">
+        <h2 id="editor-heading">Your code <span class="file">my-hobby-page.html</span></h2>
+        <div class="tools">
+          <button type="button" class="btn btn-quiet" data-download>Download my page</button>
+          <button type="button" class="btn btn-quiet" data-reset>Start again</button>
+        </div>
+      </div>
+      <p class="keys" id="editor-keys">In the editor, Tab indents. Press Esc to leave the editor.</p>
+      <div class="editor" data-editor></div>
+    </section>
+  </div>
+
+  <div class="col right">
+    <Preview />
+
+    <section class="panel feedback" aria-labelledby="feedback-heading">
+      <h2 id="feedback-heading" class="visually-hidden">Feedback from {config.mascot.name}</h2>
+      <div class="say">
+        <Mascot id="mascot" size={84} />
+        <div class="bubble">
+          <p class="message" data-message aria-live="polite">Type your code, then press Check my page.</p>
+          <button type="button" class="btn btn-quiet goto" data-goto hidden>Go to line</button>
+          <ul class="mistakes" data-mistakes hidden></ul>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-gold btn-big" data-check>Check my page</button>
+        <a class="btn btn-big next" data-next href="#" aria-disabled="true">Next <span aria-hidden="true">▶</span></a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<dialog class="confirm" data-confirm aria-labelledby="confirm-title">
+  <form method="dialog">
+    <h2 id="confirm-title">Start again?</h2>
+    <p>This clears your code and your progress on every level. Your hobby stays the same. You can't undo this.</p>
+    <div class="row">
+      <button class="btn" value="cancel" autofocus>Keep my work</button>
+      <button class="btn btn-gold" value="reset">Yes, start again</button>
+    </div>
+  </form>
+</dialog>
+
+<style is:global>
+  .builder {
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .builder .col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+  }
+  .builder .panel {
+    background: #fff;
+    border: 3px solid var(--navy);
+    border-radius: 6px;
+    padding: 14px 18px;
+  }
+  .builder .checklist {
+    flex: 0 1 auto;
+    max-height: 46%;
+  }
+  .editor-panel {
+    flex: 1 1 0;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 0 0 !important;
+    overflow: hidden;
+  }
+  .editor-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 10px 0 18px;
+    flex-wrap: wrap;
+  }
+  .editor-head h2 {
+    font-size: 18px;
+  }
+  .file {
+    font: 400 14px var(--mono);
+    color: var(--muted);
+    margin-left: 8px;
+  }
+  .tools {
+    display: flex;
+    gap: 2px;
+  }
+  .tools .btn {
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 44px;
+  }
+  .keys {
+    font-size: 14px;
+    color: var(--muted);
+    padding: 0 18px;
+  }
+  .editor {
+    flex: 1;
+    min-height: 0;
+    border-top: 1px solid var(--line);
+  }
+  .editor .cm-editor {
+    height: 100%;
+  }
+  .editor:focus-within {
+    box-shadow: inset 0 0 0 3px var(--blue-dark);
+  }
+  .builder .preview {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+  .feedback {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .say {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .bubble {
+    flex: 1;
+    min-width: 0;
+    background: var(--cream);
+    border: 2px solid var(--cream-line);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    max-height: 132px;
+    overflow: auto;
+  }
+  .bubble.good {
+    background: #e7f5ec;
+    border-color: #a9dcbc;
+  }
+  .message {
+    color: #33260a;
+    font-weight: 500;
+  }
+  .bubble.good .message {
+    color: #0f4d2c;
+  }
+  .goto {
+    min-height: 36px !important;
+    padding: 2px 8px !important;
+    font-size: 15px !important;
+    margin-left: -8px;
+  }
+  .mistakes {
+    margin: 4px 0 0;
+    padding-left: 20px;
+    font-size: 15px;
+    color: #4a3300;
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .actions .btn-big {
+    min-height: 52px;
+    padding: 10px 24px;
+  }
+  .confirm {
+    border: 4px solid var(--navy);
+    border-radius: 8px;
+    padding: 24px 28px;
+    max-width: 460px;
+    font-family: var(--body);
+  }
+  .confirm::backdrop {
+    background: rgba(10, 27, 46, 0.6);
+  }
+  .confirm h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .confirm .row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .celebrate {
+    position: fixed;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .celebrate span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--navy);
+    animation: coin 0.9s steps(6) forwards;
+  }
+  @keyframes coin {
+    0% { transform: translate(0, 0); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translate(var(--x), calc(var(--y) + 60px)); opacity: 0; }
+  }
+  [data-preview-highlight] {
+    outline: 4px dashed #d9455f !important;
+  }
+
+  @media (max-width: 1000px), (max-height: 600px) {
+    .builder {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+    .builder .checklist {
+      max-height: none;
+    }
+    .editor-panel {
+      height: 60vh;
+      flex: none;
+    }
+    .builder .preview {
+      height: 70vh;
+      flex: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .builder {
+      padding: 12px;
+    }
+  }
+</style>

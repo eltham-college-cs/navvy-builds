@@ -1,0 +1,162 @@
+---
+/** The home page game scene: sky, clouds, ground, mascot, </> block and title. */
+import LogoCube from './LogoCube.astro';
+import Mascot from './Mascot.astro';
+---
+<div class="scene" role="img" aria-label="Eltham College Navvy Builds: a pixel snake jumps up to hit a gold code cube in a blue sky.">
+  <div class="cloud c1 drift"></div>
+  <div class="cloud c2 drift"></div>
+  <div class="ground"></div>
+  <div class="hero">
+    <div class="block-wrap bump">
+      <LogoCube size={100} />
+    </div>
+    <div class="snake jump"><Mascot size={168} decorative /></div>
+  </div>
+  <div class="title">
+    <p class="pixel school">ELTHAM COLLEGE</p>
+    <p class="pixel logo">{'NA<>Y BUILDS'}</p>
+    <p class="pixel tag">HTML and CSS, level by level</p>
+  </div>
+</div>
+
+<style>
+  .scene {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--sky);
+    border: 4px solid var(--navy);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 48px 96px;
+  }
+  .cloud {
+    position: absolute;
+    background: #fff;
+  }
+  .c1 {
+    left: 46%;
+    top: 30px;
+    width: 96px;
+    height: 24px;
+    box-shadow: 16px -16px 0 0 #fff, 40px -16px 0 0 #fff;
+  }
+  .c2 {
+    right: 7%;
+    top: 64px;
+    width: 72px;
+    height: 20px;
+    box-shadow: 12px -14px 0 0 #fff;
+  }
+  .ground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 64px;
+    background: repeating-linear-gradient(90deg, var(--navy-2) 0 32px, var(--navy) 32px 64px);
+    border-top: 8px solid var(--gold);
+  }
+  .hero {
+    position: relative;
+    width: 200px;
+    height: 280px;
+    flex: none;
+    align-self: flex-end;
+    margin-bottom: -88px;
+  }
+  .block-wrap {
+    position: absolute;
+    left: 30px;
+    top: -12px;
+  }
+  .snake {
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+  }
+  .title {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+  .school {
+    font-size: clamp(14px, 1.8vw, 22px);
+    color: var(--navy);
+  }
+  .logo {
+    font-size: clamp(28px, 4.2vw, 52px);
+    line-height: 1.15;
+    color: var(--gold);
+    text-shadow: 6px 6px 0 var(--navy), -3px -3px 0 var(--navy), 3px -3px 0 var(--navy), -3px 3px 0 var(--navy);
+  }
+  .tag {
+    font-size: clamp(11px, 1.2vw, 15px);
+    color: var(--navy);
+    background: #fff;
+    border: 4px solid var(--navy);
+    padding: 12px 16px;
+    align-self: flex-start;
+  }
+
+  @keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    45% { transform: translateY(-34px); }
+  }
+  @keyframes bump {
+    0%, 38%, 62%, 100% { transform: translateY(0); }
+    48% { transform: translateY(-8px); }
+  }
+  @keyframes drift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(40px); }
+  }
+  .jump {
+    animation: jump 1.6s steps(6) infinite;
+  }
+  .bump {
+    animation: bump 1.6s steps(4) infinite;
+  }
+  .drift {
+    animation: drift 8s linear infinite alternate;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jump,
+    .bump,
+    .drift {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .scene {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 28px 20px 88px;
+      gap: 8px;
+      min-height: 0;
+    }
+    .hero {
+      order: 2;
+      align-self: flex-start;
+      transform: scale(0.7);
+      transform-origin: bottom left;
+      height: 220px;
+      margin: -40px 0 -88px;
+    }
+    .c1 {
+      left: auto;
+      right: 70px;
+      top: 22px;
+      transform: scale(0.6);
+    }
+    .c2 {
+      display: none;
+    }
+  }
+</style>

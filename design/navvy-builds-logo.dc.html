@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Web builder logo options</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Lexend:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBFAF5}
+@keyframes jump{0%,100%{transform:translateY(0)}45%{transform:translateY(-34px)}}
+@keyframes bump{0%,38%,62%,100%{transform:translateY(0)}48%{transform:translateY(-8px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(40px)}}
+.jump{animation:jump 1.6s steps(6) infinite}
+.bump{animation:bump 1.6s steps(4) infinite}
+.float{animation:float 2s steps(4) infinite}
+.drift{animation:drift 8s linear infinite alternate}
+@media (prefers-reduced-motion:reduce){.jump,.bump,.float,.drift{animation:none}}
+</style>
+</helmet>
+<div style="font-family: Lexend, sans-serif; color: #1A1D21; background: #FBFAF5; padding: 48px; display: flex; flex-direction: column; gap: 40px">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 32px; line-height: 1.4; color: #0A1B2E">Web builder logos</h1>
+<p style="margin: 0; font-size: 18px; color: #555D68; max-width: 760px">Three retro platform-game directions with a pixel Yoka. Names are working titles; pick a direction and a name and the rest can be refined.</p>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #0A1B2E">Chosen direction · Navvy Builds</h2>
+<div style="position: relative; overflow: hidden; border-radius: 24px; background: #7CC4F2; height: 400px; border: 4px solid #0A1B2E">
+<div class="drift" style="position: absolute; left: 520px; top: 46px; width: 96px; height: 24px; background: #FFFFFF; box-shadow: 16px -16px 0 0 #FFFFFF, 40px -16px 0 0 #FFFFFF"></div>
+<div class="drift" style="position: absolute; right: 120px; top: 84px; width: 72px; height: 20px; background: #FFFFFF; box-shadow: 12px -14px 0 0 #FFFFFF"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: repeating-linear-gradient(90deg, #163351 0 32px, #0A1B2E 32px 64px); border-top: 8px solid #F2B533"></div>
+<div style="position: absolute; left: 96px; bottom: 72px">
+<div class="jump">
+<div style="width: 168px; height: 126px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr)">
+<sc-for each="{{ yoka }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+</div>
+</div>
+<div class="bump" style="position: absolute; left: 132px; top: 48px; width: 88px; height: 88px; background: #F2B533; border: 4px solid #0A1B2E; box-shadow: inset -8px -8px 0 #B07D12, inset 8px 8px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 18px; color: #0A1B2E">&lt;/&gt;</div>
+<div style="position: absolute; left: 340px; top: 112px; display: flex; flex-direction: column; gap: 22px">
+<div style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: #0A1B2E">ELTHAM COLLEGE</div>
+<div style="font-family: 'Press Start 2P', monospace; font-size: 64px; line-height: 1.15; color: #F2B533; text-shadow: 6px 6px 0 #0A1B2E, -3px -3px 0 #0A1B2E, 3px -3px 0 #0A1B2E, -3px 3px 0 #0A1B2E">NAVVY BUILDS</div>
+<div style="font-family: 'Press Start 2P', monospace; font-size: 15px; color: #0A1B2E; background: #FFFFFF; border: 4px solid #0A1B2E; padding: 12px 16px; align-self: flex-start">HTML and CSS, level by level</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px">
+<div style="background: #0A1B2E; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px">
+<div style="width: 40px; height: 40px; background: #F2B533; border: 3px solid #FFFFFF; box-shadow: inset -4px -4px 0 #B07D12, inset 4px 4px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #0A1B2E">&lt;/&gt;</div>
+<span style="font-family: 'Press Start 2P', monospace; font-size: 16px; color: #F2B533">NAVVY BUILDS</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px">
+<div style="width: 64px; height: 64px; background: #F2B533; border: 4px solid #0A1B2E; box-shadow: inset -6px -6px 0 #B07D12, inset 6px 6px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 13px; color: #0A1B2E">&lt;/&gt;</div>
+<span style="font-size: 15px; color: #555D68">App icon</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #D7E3EF; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px">
+<div style="width: 32px; height: 32px; background: #F2B533; border: 2px solid #0A1B2E; box-shadow: inset -3px -3px 0 #B07D12, inset 3px 3px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 7px; color: #0A1B2E">&lt;/&gt;</div>
+<span style="font-size: 15px; color: #555D68">Browser tab</span>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #0A1B2E">Option A · Tag Quest</h2>
+<div style="position: relative; overflow: hidden; border-radius: 24px; background: #7CC4F2; height: 360px; border: 4px solid #0A1B2E">
+<div class="drift" style="position: absolute; left: 70px; top: 40px; width: 96px; height: 24px; background: #FFFFFF; box-shadow: 16px -16px 0 -0px #FFFFFF, 40px -16px 0 0 #FFFFFF"></div>
+<div class="drift" style="position: absolute; right: 180px; top: 70px; width: 72px; height: 20px; background: #FFFFFF; box-shadow: 12px -14px 0 0 #FFFFFF"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: repeating-linear-gradient(90deg, #163351 0 32px, #0A1B2E 32px 64px); border-top: 8px solid #F2B533"></div>
+<div style="position: absolute; left: 96px; bottom: 72px; display: flex; flex-direction: column; align-items: center; gap: 0">
+<div class="jump">
+<div style="width: 168px; height: 126px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr)">
+<sc-for each="{{ yoka }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+</div>
+</div>
+<div class="bump" style="position: absolute; left: 132px; top: 40px; width: 88px; height: 88px; background: #F2B533; border: 4px solid #0A1B2E; box-shadow: inset -8px -8px 0 #B07D12, inset 8px 8px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 18px; color: #0A1B2E">&lt;/&gt;</div>
+<div style="position: absolute; left: 340px; top: 96px; display: flex; flex-direction: column; gap: 22px">
+<div style="font-family: 'Press Start 2P', monospace; font-size: 64px; line-height: 1.15; color: #F2B533; text-shadow: 6px 6px 0 #0A1B2E, -3px -3px 0 #0A1B2E, 3px -3px 0 #0A1B2E, -3px 3px 0 #0A1B2E">TAG QUEST</div>
+<div style="font-family: 'Press Start 2P', monospace; font-size: 15px; color: #0A1B2E; background: #FFFFFF; border: 4px solid #0A1B2E; padding: 12px 16px; align-self: flex-start">Build the web, one block at a time</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #0A1B2E">Option B · Pixel Pages</h2>
+<div style="display: flex; align-items: flex-end; gap: 56px; background: #0A1B2E; border-radius: 24px; padding: 48px 64px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; align-items: center">
+<div class="float">
+<div style="width: 120px; height: 90px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr)">
+<sc-for each="{{ yoka }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+</div>
+<div style="width: 112px; height: 48px; background: #2F7DD1; border: 4px solid #FFFFFF; box-shadow: inset -6px -6px 0 #1E4F8C, inset 6px 6px 0 #8EC3F3; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 14px; color: #FFFFFF">&lt;img&gt;</div>
+<div style="width: 152px; height: 48px; background: #1F9D5C; border: 4px solid #FFFFFF; border-top: 0; box-shadow: inset -6px -6px 0 #136B3D, inset 6px 6px 0 #7FD3A6; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 14px; color: #FFFFFF">&lt;p&gt;</div>
+<div style="width: 192px; height: 48px; background: #F2B533; border: 4px solid #FFFFFF; border-top: 0; box-shadow: inset -6px -6px 0 #B07D12, inset 6px 6px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 14px; color: #0A1B2E">&lt;h1&gt;</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px">
+<div style="font-family: 'Press Start 2P', monospace; font-size: 72px; line-height: 1.1; color: #FFFFFF; text-shadow: 6px 6px 0 #2F7DD1">PIXEL</div>
+<div style="font-family: 'Press Start 2P', monospace; font-size: 72px; line-height: 1.1; color: #F2B533; text-shadow: 6px 6px 0 #B07D12">PAGES</div>
+<div style="font-size: 18px; color: #E3C783">Stack the tags. Build the page.</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #0A1B2E">Option C · Yoka Builds</h2>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px; background: #FFF4D6; border-radius: 24px; padding: 48px 64px; border: 2px solid #F0DDAA">
+<div style="position: relative; width: 220px; height: 220px; background: #0A1B2E; border-radius: 44px; box-shadow: inset 0 -12px 0 #163351; display: flex; align-items: center; justify-content: center">
+<div style="width: 160px; height: 120px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr); margin-top: -16px">
+<sc-for each="{{ yoka }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+<div class="float" style="position: absolute; right: -14px; bottom: -14px; width: 76px; height: 76px; background: #F2B533; border: 4px solid #0A1B2E; box-shadow: inset -6px -6px 0 #B07D12, inset 6px 6px 0 #FFE08A; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 15px; color: #0A1B2E">&lt;/&gt;</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: #7A5300">ELTHAM COLLEGE</div>
+<div style="font-family: 'Press Start 2P', monospace; font-size: 64px; line-height: 1.15; color: #0A1B2E; text-shadow: 5px 5px 0 #F2B533">YOKA<br>BUILDS</div>
+<div style="font-size: 18px; color: #4A3300">HTML and CSS, level by level.</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #0A1B2E">Small-size test: site header and browser tab</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div style="background: #0A1B2E; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 12px">
+<div style="width: 48px; height: 36px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr)">
+<sc-for each="{{ yoka }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+<span style="font-family: 'Press Start 2P', monospace; font-size: 15px; color: #F2B533">TAG QUEST</span>
+</div>
+<div style="background: #0A1B2E; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="width: 18px; height: 8px; background: #2F7DD1"></span>
+<span style="width: 26px; height: 8px; background: #1F9D5C"></span>
+<span style="width: 34px; height: 8px; background: #F2B533"></span>
+</div>
+<span style="font-family: 'Press Start 2P', monospace; font-size: 15px; color: #FFFFFF">PIXEL <span style="color: #F2B533">PAGES</span></span>
+</div>
+<div style="background: #0A1B2E; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 12px">
+<div style="width: 40px; height: 40px; background: #F2B533; border-radius: 10px; display: flex; align-items: center; justify-content: center">
+<div style="width: 32px; height: 24px; display: grid; grid-template-columns: repeat(24, 1fr); grid-template-rows: repeat(18, 1fr)">
+<sc-for each="{{ yokaOnGold }}" as="c" hint-placeholder-count="432"><div style="background: {{ c.col }}"></div></sc-for>
+</div>
+</div>
+<span style="font-family: 'Press Start 2P', monospace; font-size: 15px; color: #FFFFFF">YOKA BUILDS</span>
+</div>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rows = [
+      "...........KKKKKKKK.....",
+      ".............KKKK..Y....",
+      "..........KKKGGGGKK..Y..",
+      ".........KGGGGGGGGGKK...",
+      "........KGGWWGGGGWWGGK..",
+      "........KGGWKGGGGWKGGGK.",
+      "........KGGGKGGGGGKGGGGK",
+      ".........KGGGKKKKKGGGGKR",
+      "..........KKGGGGGGGKKK.R",
+      "...........KGCDGK.......",
+      "............KGCDGK......",
+      "............KGCGDK......",
+      ".K.........KGCDGK.......",
+      ".KK...KKKKKGCDGK........",
+      "..KGKKGGDGGGGGDKKKKK....",
+      "..KGGGGGGDGGGGGGGDGGK...",
+      "...KGDGGGGGGGDGGGGGDGK..",
+      "....KKKKKKKKKKKKKKKKKK.."
+    ];
+    const pal = { '.': 'transparent', K: '#0A1B2E', G: '#F2B533', D: '#163351', W: '#FFFFFF', R: '#D9455F', C: '#FFF1C9', Y: '#E3C783' };
+    const build = (p) => rows.join('').split('').map((ch) => ({ col: p[ch] ?? 'transparent' }));
+    return {
+      yoka: build(pal),
+      yokaOnGold: build({ ...pal, G: '#FFF1C9', Y: '#0A1B2E' })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+---
+/**
+ * A row of level blocks: locked, current or done. The state comes from
+ * localStorage, so it is applied in the browser by applyLevelMap().
+ */
+import { url } from '../lib/url';
+
+interface Props {
+  lessonId: string;
+  levels: { id: number | 'boss'; title: string }[];
+  compact?: boolean;
+  label?: string;
+}
+const { lessonId, levels, compact = false, label = 'Levels' } = Astro.props;
+const play = url(`lessons/${lessonId}/play/`);
+---
+<nav class:list={['level-map', { compact }]} aria-label={label} data-level-map>
+  <ol>
+    {
+      levels.map((level) => (
+        <li>
+          <a
+            class="level-block"
+            href={`${play}#level-${level.id}`}
+            data-level-id={String(level.id)}
+            data-title={level.title}
+            data-state="locked"
+            aria-disabled="true"
+          >
+            <span class:list={['num', level.id === 'boss' ? 'star' : 'pixel']} aria-hidden="true">{level.id === 'boss' ? '★' : level.id}</span>
+            {!compact && <span class="title">{level.title}</span>}
+            <span class="visually-hidden sr-label">
+              {level.id === 'boss' ? 'Boss level' : `Level ${level.id}`}: {level.title}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style is:global>
+  .level-map ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .level-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 104px;
+    min-height: 104px;
+    padding: 12px 6px;
+    border: 4px solid var(--navy);
+    text-decoration: none;
+    color: var(--navy);
+    background: #dfe6ee;
+    box-shadow: inset -5px -5px 0 #b6c2cf, inset 5px 5px 0 #f4f7fa;
+    text-align: center;
+  }
+  .level-block .num {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .level-block .num.star {
+    font-size: 30px;
+    line-height: 0.8;
+  }
+  .level-map.compact .level-block .num.star {
+    font-size: 22px;
+  }
+  .level-block .title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .level-block[data-state='locked'] {
+    color: #4a5562;
+    cursor: not-allowed;
+  }
+  .level-block[data-state='locked']::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 10px;
+    height: 8px;
+    background: #4a5562;
+    box-shadow: 0 -6px 0 -2px #dfe6ee, 0 -6px 0 0 #4a5562;
+  }
+  .level-block[data-state='current'] {
+    background: var(--gold);
+    box-shadow: var(--bevel);
+  }
+  .level-block[data-state='done'] {
+    background: var(--green-dark);
+    color: #fff;
+    box-shadow: inset -5px -5px 0 #0f5c34, inset 5px 5px 0 #2fb26c;
+  }
+  .level-block[data-state='done']::after {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .level-block[data-state='done'].here,
+  .level-block[data-state='current'].here {
+    outline: 4px solid var(--gold);
+    outline-offset: 3px;
+  }
+  .level-map:not(.compact) .level-block:not([data-state='locked']):hover {
+    transform: translateY(-3px);
+  }
+
+  .level-map.compact ol {
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  .level-map.compact .level-block {
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-width: 3px;
+    box-shadow: inset -3px -3px 0 #b6c2cf, inset 3px 3px 0 #f4f7fa;
+  }
+  .level-map.compact .level-block .num {
+    font-size: 12px;
+  }
+  .level-map.compact .level-block[data-state='current'] {
+    box-shadow: inset -3px -3px 0 var(--gold-dark), inset 3px 3px 0 var(--gold-light);
+  }
+  .level-map.compact .level-block[data-state='done'] {
+    box-shadow: inset -3px -3px 0 #0f5c34, inset 3px 3px 0 #2fb26c;
+  }
+  .level-map.compact .level-block[data-state='done']::after,
+  .level-map.compact .level-block[data-state='locked']::after {
+    display: none;
+  }
+  .level-map.compact .level-block.here {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .level-block:hover {
+      transform: none !important;
+    }
+  }
+</style>

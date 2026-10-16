@@ -1,0 +1,89 @@
+---
+import LogoCube from './LogoCube.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  current?: 'home' | 'help' | 'lesson';
+}
+const { current } = Astro.props;
+---
+<header class="site-header on-dark">
+  <div class="inner">
+    <a class="brand" href={url()} aria-label="Navvy Builds home">
+      <LogoCube size={42} outline="#FFFFFF" />
+      <span class="pixel name">{'NA<>Y BUILDS'}</span>
+    </a>
+    <div class="context"><slot /></div>
+    <nav aria-label="Main">
+      <a href={url()} aria-current={current === 'home' ? 'page' : undefined}>Lessons</a>
+      <a href={url('help/')} aria-current={current === 'help' ? 'page' : undefined}>Help</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--navy);
+    color: #fff;
+    min-height: var(--header-h);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 24px;
+    min-height: var(--header-h);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--gold);
+    text-decoration: none;
+    flex: none;
+    min-height: 44px;
+  }
+  .name {
+    font-size: 15px;
+  }
+  .context {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  nav {
+    display: flex;
+    gap: 4px;
+    flex: none;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  nav a:hover {
+    background: var(--navy-2);
+    color: #fff;
+  }
+  nav a[aria-current='page'] {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .name {
+      display: none;
+    }
+    .inner {
+      padding: 10px 16px;
+      gap: 12px;
+    }
+  }
+</style>

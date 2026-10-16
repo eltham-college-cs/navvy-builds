@@ -1,0 +1,218 @@
+---
+/** The level's goals, ticking live as they pass, with hints and the image library. */
+---
+<section class="checklist panel" aria-labelledby="level-title">
+  <div class="head">
+    <p class="pixel level-tag" data-level-tag>LEVEL 1</p>
+    <h1 class="pixel level-title" id="level-title" data-level-title>Foundations</h1>
+  </div>
+  <p class="intro" data-level-intro></p>
+  <p class="visually-hidden" aria-live="polite" data-goal-summary></p>
+  <ul class="goals" data-goals></ul>
+  <details class="library" data-library>
+    <summary>Image library</summary>
+    <div class="library-body">
+      <p class="library-note">Copy a path into <code>src="…"</code>. If you download your page, save the pictures in a folder called <code>images</code> next to it.</p>
+      <ul class="pictures" data-pictures></ul>
+      <p class="visually-hidden" aria-live="polite" data-copy-status></p>
+    </div>
+  </details>
+</section>
+
+<template id="goal-template">
+  <li class="goal" data-state="fail">
+    <span class="tick" aria-hidden="true"></span>
+    <div class="goal-body">
+      <div class="goal-row">
+        <p class="goal-text"><span class="visually-hidden goal-status">Not done yet:</span> <span class="text"></span></p>
+        <button type="button" class="btn btn-quiet hint-btn">Hint</button>
+      </div>
+      <p class="goal-msg" hidden></p>
+      <ol class="hints" hidden></ol>
+    </div>
+  </li>
+</template>
+
+<style is:global>
+  .checklist {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .checklist .head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .level-tag {
+    font-size: 11px;
+    color: var(--gold-text);
+    margin: 0;
+  }
+  .level-title {
+    font-size: 18px;
+    color: var(--navy);
+  }
+  .checklist .intro {
+    color: #3a4654;
+  }
+  .goals {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .goal {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .tick {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    margin-top: 1px;
+    border: 3px solid var(--navy);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 17px;
+    color: #fff;
+  }
+  .goal[data-state='pass'] .tick {
+    background: var(--green-dark);
+    animation: tick-pop 0.3s steps(3) 1;
+  }
+  .goal[data-state='pass'] .tick::after {
+    content: '✓';
+  }
+  .goal[data-state='pending'] .tick {
+    background: #eef2f7;
+  }
+  @keyframes tick-pop {
+    0% { transform: scale(0.6); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  .goal-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .goal-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    align-self: stretch;
+  }
+  .goal-text {
+    font-weight: 500;
+    padding-top: 2px;
+  }
+  .goal[data-state='pass'] .goal-text .text {
+    color: var(--green-dark);
+  }
+  .goal-msg {
+    font-size: 16px;
+    color: var(--red);
+    background: var(--red-soft);
+    border-radius: 8px;
+    padding: 4px 10px;
+  }
+  .hints {
+    margin: 0;
+    padding: 8px 12px 8px 30px;
+    background: var(--cream);
+    border: 1px solid var(--cream-line);
+    border-radius: 10px;
+    font-size: 16px;
+    color: #4a3300;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-self: stretch;
+  }
+  .hint-btn {
+    flex: none;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 4px 10px;
+    font-size: 15px;
+    margin: -8px -8px -8px 0;
+  }
+  .library {
+    border-top: 2px solid var(--line);
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .library summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--navy);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .library-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .library-note {
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .pictures {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .pictures li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .pictures img {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    border: 2px solid var(--navy);
+  }
+  .pictures code {
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .pictures .row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .pictures .btn {
+    min-height: 44px;
+    padding: 6px 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 0 var(--navy);
+    border-width: 2px;
+  }
+  .pictures .save {
+    font-size: 14px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 6px;
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import { config } from '../config';
+import { mascotSvg, type Mood } from '../lib/mascot';
+
+interface Props {
+  mood?: Mood;
+  /** Width in px; the mascot is 24×18 pixels. */
+  size?: number;
+  id?: string;
+  class?: string;
+  decorative?: boolean;
+}
+const { mood = 'idle', size = 96, id, class: className = '', decorative = false } = Astro.props;
+const label = decorative ? '' : `${config.mascot.name} the snake`;
+---
+<span
+  id={id}
+  class:list={['mascot', `mood-${mood}`, className]}
+  data-mood={mood}
+  style={`width:${size}px;height:${Math.round((size * 18) / 24)}px`}
+  set:html={mascotSvg(mood, label)}
+/>
+
+<style is:global>
+  .mascot {
+    display: inline-block;
+    flex: none;
+  }
+  .mascot svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .mascot.react.mood-happy {
+    animation: mascot-hop 0.9s steps(4) 1;
+  }
+  .mascot.react.mood-tryagain {
+    animation: mascot-shake 0.5s steps(4) 1;
+  }
+  @keyframes mascot-hop {
+    0%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-14px); }
+    70% { transform: translateY(-4px); }
+  }
+  @keyframes mascot-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mascot.react {
+      animation: none;
+    }
+  }
+</style>
