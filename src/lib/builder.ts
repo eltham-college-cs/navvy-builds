@@ -389,7 +389,7 @@ export function startBuilder(data: BuilderData): void {
       setMood('happy', true);
       const next = ids[levelIndex + 1];
       const praise = isBoss
-        ? 'You beat the boss level! Your page is finished. Download it to keep it.'
+        ? 'You beat the boss level! Your page is finished. Download your report to hand it in.'
         : `Level ${level.id} complete! ${next === 'boss' ? 'The boss level is unlocked.' : `Level ${next} is unlocked.`}`;
       say(firstTime ? praise : `Everything still passes. ${praise}`, { good: true });
       applyLevelMap(document, ids, progress.completed, level.id);
@@ -424,6 +424,58 @@ export function startBuilder(data: BuilderData): void {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     say('Downloaded my-hobby-page.html. If you used library pictures, save them in a folder called images next to it.');
   });
+
+  const reportBtn = $<HTMLButtonElement>('[data-report-open]');
+  const reportDialog = $<HTMLDialogElement>('[data-report]');
+  const reportName = $<HTMLInputElement>('#report-name');
+  let reporting = false;
+
+  reportBtn.addEventListener('click', () => {
+    if (reporting) return;
+    reportDialog.returnValue = '';
+    reportDialog.showModal();
+  });
+  $('[data-report-cancel]').addEventListener('click', () => reportDialog.close('cancel'));
+  reportDialog.addEventListener('close', () => {
+    if (reportDialog.returnValue === 'make') void makeReport(reportName.value.trim());
+  });
+
+  async function makeReport(name: string) {
+    reporting = true;
+    reportBtn.setAttribute('aria-disabled', 'true');
+    reportBtn.textContent = 'Making your report…';
+    say('Making your report. This takes a few seconds.');
+    try {
+      await renderNow();
+      const env = documentStyleEnv(preview.contentDocument!, twin.contentDocument!);
+      const levels = lesson.levels.map((level, i) => {
+        const r = runLevel(lesson, i, page, env);
+        return {
+          label: level.id === 'boss' ? 'Boss level' : `Level ${level.id}: ${level.title}`,
+          done: r.goals.filter((g) => g.pass).length,
+          total: r.goals.length,
+          cleared: progress.completed.includes(level.id),
+        };
+      });
+      const { downloadReport } = await import('./report');
+      const file = await downloadReport({
+        name,
+        hobby: isOpenHobby(hobby) ? 'Something else' : hobby,
+        code,
+        html: previewHtml(page.safeHtml, data.siteUrl, data.libraryUrl),
+        title: page.doc.title.trim(),
+        levels,
+      });
+      say(`Downloaded ${file}. Upload it to your Teams assignment.`, { good: true });
+    } catch (err) {
+      console.error(err);
+      say('Sorry, your report couldn’t be made. Try again, or use Download my page instead.');
+    } finally {
+      reporting = false;
+      reportBtn.removeAttribute('aria-disabled');
+      reportBtn.textContent = 'Download my report';
+    }
+  }
 
   $('[data-reset]').addEventListener('click', () => confirm.showModal());
   confirm.addEventListener('close', () => {

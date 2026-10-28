@@ -36,6 +36,7 @@ import { config } from '../config';
         </div>
       </div>
       <div class="actions">
+        <button type="button" class="btn btn-quiet report-btn" data-report-open>Download my report</button>
         <button type="button" class="btn btn-gold btn-big" data-check>Check my page</button>
         <a class="btn btn-big next" data-next href="#" aria-disabled="true">Next <span aria-hidden="true">▶</span></a>
       </div>
@@ -50,6 +51,20 @@ import { config } from '../config';
     <div class="row">
       <button class="btn" value="cancel" autofocus>Keep my work</button>
       <button class="btn btn-gold" value="reset">Yes, start again</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="confirm report" data-report aria-labelledby="report-title" aria-describedby="report-about">
+  <form method="dialog">
+    <h2 id="report-title">Download my report</h2>
+    <p id="report-about">You get a PDF with a picture of your page and all of your code. Upload it to your Teams assignment.</p>
+    <label for="report-name">Your name</label>
+    <input id="report-name" name="name" type="text" maxlength="60" autocomplete="name" spellcheck="false" autofocus />
+    <p class="note">Your name only goes in the PDF. It isn't saved or sent anywhere.</p>
+    <div class="row">
+      <button type="button" class="btn" data-report-cancel>Cancel</button>
+      <button class="btn btn-gold" value="make">Make my report</button>
     </div>
   </form>
 </dialog>
@@ -210,6 +225,35 @@ import { config } from '../config';
     justify-content: flex-end;
     margin-top: 20px;
     flex-wrap: wrap;
+  }
+  .report form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .report label {
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .report input {
+    font: 18px var(--body);
+    padding: 10px 14px;
+    min-height: 48px;
+    border: 3px solid var(--navy);
+    border-radius: 4px;
+  }
+  .report .note {
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .report-btn {
+    margin-right: auto;
+    min-height: 52px;
+    padding: 6px 10px;
+    font-size: 15px;
+  }
+  .report-btn[aria-disabled='true'] {
+    cursor: progress;
   }
   .celebrate {
     position: fixed;

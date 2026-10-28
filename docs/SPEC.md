@@ -128,6 +128,12 @@ decided: keep the name in one config value (`mascot.name`).
 - **Save:** code, hobby and level progress go to `localStorage` on every change.
   **Download my page** saves `my-hobby-page.html`. **Start again** asks to
   confirm first.
+- **Report:** **Download my report** asks for the student's name (used only in
+  the PDF, never saved) and downloads `my-hobby-page-report-<name>.pdf`, made in
+  the browser: a summary of every level (goals passing now, cleared or not), a
+  picture of the page laid out at 1000px wide, and all the code with line
+  numbers. Students upload it to their Teams assignment themselves. Pictures
+  from other websites may be missing from the picture, and the PDF says so.
 
 ## 6. Hobby personalisation
 
