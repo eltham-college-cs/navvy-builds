@@ -1,0 +1,236 @@
+---
+/**
+ * Sixth Form help: everything in OCR H446 Appendix 5d mapped to the level that
+ * teaches it, the pseudocode ↔ JavaScript panel, and the common mistakes.
+ */
+import Base from '../../layouts/Base.astro';
+import PseudocodePanel from '../../components/PseudocodePanel.astro';
+import { url } from '../../lib/url';
+
+const coverage: { title: string; note: string; rows: [string, string][] }[] = [
+  {
+    title: 'HTML',
+    note: 'Tags you must recognise',
+    rows: [
+      ['<html> <head> <title> <body>', 'Level 1'],
+      ['<h1> <h2> <h3> <p>', 'Levels 1–2'],
+      ['<img> src alt height width', 'Level 2'],
+      ['<a> href', 'Level 2'],
+      ['<div> <ul> <ol> <li>', 'Level 2'],
+      ['<link> to a CSS file', 'Level 3'],
+      ['<form>', 'Level 5'],
+      ['<input type="text" name="…">', 'Level 5'],
+      ['<input type="submit">', 'Level 5'],
+      ['<script>', 'Level 6'],
+    ],
+  },
+  {
+    title: 'CSS',
+    note: 'Three ways to style, nine properties',
+    rows: [
+      ['style="…" attribute', 'Level 3'],
+      ['External style sheet, element rules', 'Level 3'],
+      ['color (named and hex)', 'Level 3'],
+      ['font-family, font-size', 'Level 3'],
+      ['background-color', 'Levels 3–4'],
+      ['.class selector', 'Level 4'],
+      ['#id selector', 'Level 4'],
+      ['border-color, border-style, border-width', 'Level 4'],
+      ['height, width', 'Level 4'],
+    ],
+  },
+  {
+    title: 'JavaScript',
+    note: 'Output methods and the pseudocode structures',
+    rows: [
+      ['Input read from a form (given, not memorised)', 'Level 6'],
+      ['getElementById(…).innerHTML = …', 'Level 6'],
+      ['alert(…)', 'Level 6'],
+      ['document.write(…)', 'Level 6 trace'],
+      ['Functions and procedures', 'Level 6'],
+      ['if / else if / else, switch', 'Level 7'],
+      ['for, while, do … while', 'Level 7'],
+      ['Arrays, .length, .substring()', 'Level 7'],
+      ['Not examined: OOP, file handling, by value / by reference', '–'],
+    ],
+  },
+];
+
+const mistakes = [
+  ['.menu when the HTML says id="menu"', '# selects an id, . selects a class.'],
+  ['<link href="styles.css"> or no rel', 'The file is style.css, and the link needs rel="stylesheet".'],
+  ['border-width with no border-style', 'A border needs border-style (e.g. solid) to show at all.'],
+  ['getElementByID or innerHtml', 'JavaScript is case-sensitive: getElementById, innerHTML.'],
+  ['getElementById("#result")', 'No # inside getElementById: getElementById("result").'],
+  ['<script> in head', 'It runs before the page exists. Put it at the end of body.'],
+  ['The page flashes and resets on submit', 'End the onsubmit function with return false;'],
+  ['A function that returns undefined', 'You forgot return.'],
+  ['if (score = 2)', '= stores a value. Compare with == or ===.'],
+  ['A loop that never stops', 'Check the condition changes each time round the loop.'],
+  ['for i = 0 to 7 becomes i < 7', 'Pseudocode includes the end value, so use i <= 7.'],
+  ['A switch with no break', 'Without break, one case runs on into the next.'],
+];
+---
+<Base title="Sixth Form help" current="help" description="OCR H446 web technologies: Appendix 5d coverage, pseudocode to JavaScript, and common mistakes.">
+  <div class="wrap sf-help">
+    <header>
+      <p class="eyebrow">Sixth Form · OCR H446 1.3.4</p>
+      <h1>Web technologies help</h1>
+      <p>Everything in Appendix 5d, and where Na&lt;&gt;y Builds teaches it. Anything not listed will be explained in the exam question. <a href={url('help/')}>Year 8 cheat sheet</a></p>
+    </header>
+
+    <section aria-labelledby="cov-h">
+      <h2 id="cov-h">Appendix 5d coverage</h2>
+      <div class="cov">
+        {
+          coverage.map((col) => (
+            <div class="col card">
+              <h3>{col.title}</h3>
+              <p class="note">{col.note}</p>
+              <ul>
+                {col.rows.map(([item, where]) => (
+                  <li>
+                    <code>{item}</code>
+                    <span>{where}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section aria-labelledby="pseudo-h">
+      <h2 id="pseudo-h">Pseudocode ↔ JavaScript</h2>
+      <div class="card"><PseudocodePanel /></div>
+    </section>
+
+    <section aria-labelledby="out-h">
+      <h2 id="out-h">Output, the three exam ways</h2>
+      <pre class="code"><code>{`// Change what an element shows
+chosenElement = document.getElementById("example");
+chosenElement.innerHTML = "Hello World";
+
+// Write straight into the page
+document.write("Hello World");
+
+// An alert box
+alert("Hello World");`}</code></pre>
+    </section>
+
+    <section aria-labelledby="mis-h">
+      <h2 id="mis-h">Common mistakes</h2>
+      <dl class="mistakes">
+        {
+          mistakes.map(([what, fix]) => (
+            <div>
+              <dt>{what}</dt>
+              <dd>{fix}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .sf-help {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    font-size: 16px;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  .cov {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .col {
+    padding: 16px;
+    min-width: 0;
+  }
+  .col h3 {
+    font-size: 18px;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .col li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line);
+    align-items: baseline;
+  }
+  .col li:last-child {
+    border-bottom: 0;
+  }
+  .col code {
+    font: 13.5px var(--mono);
+    font-variant-ligatures: none;
+  }
+  .col span {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .card {
+    background: #fff;
+    border: 3px solid var(--navy);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .code {
+    background: #0d2136;
+    color: #dce6f2;
+    font: 14px/1.6 var(--mono);
+    font-variant-ligatures: none;
+    padding: 14px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .mistakes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
+    margin: 0;
+  }
+  .mistakes dt {
+    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+  .mistakes dd {
+    margin: 2px 0 0;
+    color: #3a4654;
+  }
+  @media (max-width: 860px) {
+    .cov,
+    .mistakes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

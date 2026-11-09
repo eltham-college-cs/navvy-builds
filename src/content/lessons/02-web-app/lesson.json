@@ -1,0 +1,1564 @@
+{
+  "id": "web-app",
+  "title": "My web app",
+  "year": 12,
+  "minutes": 240,
+  "summary": "Build a working web app in HTML, CSS and JavaScript, then read, fix and trace code you didn't write. For OCR A Level Computer Science (H446) section 1.3.4.",
+  "theme": "sixth-form",
+  "files": [
+    "index.html",
+    "style.css",
+    "script.js"
+  ],
+  "briefs": [
+    {
+      "id": "password",
+      "name": "Password checker",
+      "pitch": "Score how strong a password is.",
+      "keyword": "password",
+      "fn": "checkPassword",
+      "inputName": "pwd",
+      "example": "hunter22",
+      "notes": {
+        "6": "checkPassword(pwd) returns a score: 1 point for 8 or more characters, 1 point if it contains a digit. So \"hunter22\" scores 2.",
+        "7": "Add a third point for a capital letter, found with a loop, so scores go 0 to 3. Keep the words in an array, [\"Weak\", \"OK\", \"Good\", \"Strong\"], and show the word for the score. Use a switch on the score to pick a tip."
+      },
+      "tests": {
+        "6": [
+          {
+            "args": [
+              "abc"
+            ],
+            "returns": 0
+          },
+          {
+            "args": [
+              "abcdefgh"
+            ],
+            "returns": 1
+          },
+          {
+            "args": [
+              "abc1"
+            ],
+            "returns": 1
+          },
+          {
+            "args": [
+              "hunter22"
+            ],
+            "returns": 2
+          },
+          {
+            "input": "hunter22",
+            "expect": "2"
+          },
+          {
+            "input": "abc",
+            "expect": "0"
+          }
+        ],
+        "7": [
+          {
+            "args": [
+              "abc"
+            ],
+            "returns": 0
+          },
+          {
+            "args": [
+              "abcdefgh"
+            ],
+            "returns": 1
+          },
+          {
+            "args": [
+              "abcdefg1"
+            ],
+            "returns": 2
+          },
+          {
+            "args": [
+              "Abcdefg1"
+            ],
+            "returns": 3
+          },
+          {
+            "args": [
+              "ABC1"
+            ],
+            "returns": 2
+          },
+          {
+            "input": "Abcdefg1",
+            "expect": "Strong"
+          },
+          {
+            "input": "abc",
+            "expect": "Weak"
+          }
+        ]
+      }
+    },
+    {
+      "id": "grades",
+      "name": "Grade calculator",
+      "pitch": "Turn an exam mark out of 100 into a grade.",
+      "keyword": "grade",
+      "fn": "getGrade",
+      "inputName": "mark",
+      "example": "72",
+      "notes": {
+        "6": "getGrade(mark) returns \"Pass\" when the mark is 40 or more, otherwise \"Fail\".",
+        "7": "Now return A* to E, or U below 40. Store the boundaries [90, 80, 70, 60, 50, 40] and grades [\"A*\", \"A\", \"B\", \"C\", \"D\", \"E\"] in two arrays and loop to find the first boundary the mark reaches. Use a switch on the grade to choose a message."
+      },
+      "tests": {
+        "6": [
+          {
+            "args": [
+              39
+            ],
+            "returns": "Fail"
+          },
+          {
+            "args": [
+              40
+            ],
+            "returns": "Pass"
+          },
+          {
+            "args": [
+              87
+            ],
+            "returns": "Pass"
+          },
+          {
+            "input": "40",
+            "expect": "Pass"
+          },
+          {
+            "input": "12",
+            "expect": "Fail"
+          }
+        ],
+        "7": [
+          {
+            "args": [
+              95
+            ],
+            "returns": "A*"
+          },
+          {
+            "args": [
+              90
+            ],
+            "returns": "A*"
+          },
+          {
+            "args": [
+              89
+            ],
+            "returns": "A"
+          },
+          {
+            "args": [
+              72
+            ],
+            "returns": "B"
+          },
+          {
+            "args": [
+              40
+            ],
+            "returns": "E"
+          },
+          {
+            "args": [
+              39
+            ],
+            "returns": "U"
+          },
+          {
+            "input": "75",
+            "expect": "B"
+          },
+          {
+            "input": "10",
+            "expect": "U"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cafe",
+      "name": "Café order",
+      "pitch": "Work out what an order costs, in pence.",
+      "keyword": "order",
+      "fn": "orderCost",
+      "inputName": "qty",
+      "example": "2",
+      "notes": {
+        "6": "orderCost(drink, qty) returns the cost in pence. A latte is 320p, so orderCost(\"latte\", 2) is 640. Your form asks how many lattes: call orderCost(\"latte\", value).",
+        "7": "Store the menu in two arrays: drinks [\"tea\", \"coffee\", \"latte\", \"hot chocolate\"] and prices [180, 250, 320, 300]. Loop to find the drink; a drink not on the menu costs 0. Use a switch on the quantity to show a message (e.g. case 0)."
+      },
+      "tests": {
+        "6": [
+          {
+            "args": [
+              "latte",
+              1
+            ],
+            "returns": 320
+          },
+          {
+            "args": [
+              "latte",
+              3
+            ],
+            "returns": 960
+          },
+          {
+            "args": [
+              "latte",
+              0
+            ],
+            "returns": 0
+          },
+          {
+            "input": "2",
+            "expect": "640"
+          }
+        ],
+        "7": [
+          {
+            "args": [
+              "tea",
+              2
+            ],
+            "returns": 360
+          },
+          {
+            "args": [
+              "latte",
+              1
+            ],
+            "returns": 320
+          },
+          {
+            "args": [
+              "hot chocolate",
+              3
+            ],
+            "returns": 900
+          },
+          {
+            "args": [
+              "water",
+              2
+            ],
+            "returns": 0
+          },
+          {
+            "input": "2",
+            "expect": "640"
+          }
+        ]
+      }
+    },
+    {
+      "id": "units",
+      "name": "Unit converter",
+      "pitch": "Convert distances and weights, using 8 km = 5 miles.",
+      "keyword": "converter",
+      "fn": "convert",
+      "inputName": "amount",
+      "example": "16",
+      "notes": {
+        "6": "convert(value, unit) converts km to miles (multiply by 5, divide by 8) and miles to km (multiply by 8, divide by 5). Your form converts km: call convert(value, \"km\").",
+        "7": "Use a switch on the unit for km, miles, m (to cm, × 100), cm (to m, ÷ 100) and kg (to g, × 1000). Return -1 for any other unit. Keep the five unit names in an array and loop through it to list them on the page."
+      },
+      "tests": {
+        "6": [
+          {
+            "args": [
+              8,
+              "km"
+            ],
+            "returns": 5
+          },
+          {
+            "args": [
+              5,
+              "miles"
+            ],
+            "returns": 8
+          },
+          {
+            "args": [
+              0,
+              "km"
+            ],
+            "returns": 0
+          },
+          {
+            "input": "16",
+            "expect": "10"
+          }
+        ],
+        "7": [
+          {
+            "args": [
+              8,
+              "km"
+            ],
+            "returns": 5
+          },
+          {
+            "args": [
+              5,
+              "miles"
+            ],
+            "returns": 8
+          },
+          {
+            "args": [
+              2,
+              "m"
+            ],
+            "returns": 200
+          },
+          {
+            "args": [
+              250,
+              "cm"
+            ],
+            "returns": 2.5
+          },
+          {
+            "args": [
+              3,
+              "kg"
+            ],
+            "returns": 3000
+          },
+          {
+            "args": [
+              4,
+              "furlongs"
+            ],
+            "returns": -1
+          },
+          {
+            "input": "16",
+            "expect": "10"
+          }
+        ]
+      }
+    }
+  ],
+  "starter": "<!-- Your {brief} starts here. Begin with the doctype. -->\n",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Page skeleton",
+      "intro": "Your {brief} starts as a plain HTML page. Type the skeleton yourself in index.html.",
+      "goals": [
+        {
+          "text": "Start with <!DOCTYPE html>",
+          "checks": [
+            {
+              "type": "source-doctype"
+            }
+          ],
+          "hints": [
+            "The doctype is the very first line.",
+            "Type it exactly: <!DOCTYPE html>"
+          ],
+          "spec": "5d HTML · page structure"
+        },
+        {
+          "text": "Add html, head and body, each opened and closed",
+          "checks": [
+            {
+              "type": "source-balanced",
+              "tags": [
+                "html",
+                "head",
+                "body"
+              ]
+            },
+            {
+              "type": "source-inside",
+              "tag": "head",
+              "parent": "html"
+            },
+            {
+              "type": "source-inside",
+              "tag": "body",
+              "parent": "html"
+            }
+          ],
+          "hints": [
+            "head and body both sit inside html.",
+            "head comes first, then body."
+          ],
+          "spec": "5d HTML · <html> <head> <body>"
+        },
+        {
+          "text": "Give the page a title that mentions {keyword}",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "title",
+              "parent": "head"
+            },
+            {
+              "type": "text",
+              "selector": "title",
+              "containsHobby": true
+            }
+          ],
+          "hints": [
+            "The title goes inside head. It shows on the browser tab, not on the page.",
+            "<title>My {Brief}</title>"
+          ],
+          "spec": "5d HTML · <title>"
+        },
+        {
+          "text": "Add one h1 heading that mentions {keyword}",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "h1",
+              "parent": "body"
+            },
+            {
+              "type": "count",
+              "selector": "h1",
+              "min": 1,
+              "max": 1
+            },
+            {
+              "type": "text",
+              "selector": "h1",
+              "containsHobby": true
+            }
+          ],
+          "hints": [
+            "The h1 goes in body: it's the heading people see on the page.",
+            "A page has one h1."
+          ],
+          "spec": "5d HTML · <h1>"
+        },
+        {
+          "text": "Add a paragraph of at least 8 words saying what your app does",
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "p",
+              "parent": "body"
+            },
+            {
+              "type": "text",
+              "selector": "p",
+              "minWords": 8
+            }
+          ],
+          "hints": [
+            "<p> … </p> holds a paragraph of text."
+          ],
+          "spec": "5d HTML · <p>"
+        }
+      ],
+      "challenges": [
+        {
+          "type": "exam",
+          "id": "l1-title",
+          "title": "Title or heading?",
+          "question": "State where the text in the <title> element appears, and where the text in an <h1> element appears.",
+          "marks": 2,
+          "markScheme": [
+            "<title>: on the browser tab (or the title bar / bookmarks / search results)",
+            "<h1>: on the page itself, as the main heading"
+          ],
+          "spec": "read · <title>, <h1>"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Content and links",
+      "intro": "Fill out the page: section headings, a list, a picture and a link. Group related content in a div.",
+      "goals": [
+        {
+          "text": "Add at least one h2 and one h3, in order",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "h2",
+              "min": 1
+            },
+            {
+              "type": "count",
+              "selector": "h3",
+              "min": 1
+            },
+            {
+              "type": "headingOrder"
+            }
+          ],
+          "hints": [
+            "h2 is a section heading; h3 is a heading inside a section.",
+            "Go down one level at a time: h1, then h2, then h3."
+          ],
+          "spec": "5d HTML · <h2> <h3>"
+        },
+        {
+          "text": "Wrap a section of your page in a div",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "body div"
+            }
+          ],
+          "hints": [
+            "<div> … </div> groups other elements. You'll style it in level 4."
+          ],
+          "spec": "5d HTML · <div>"
+        },
+        {
+          "text": "Add a list with at least 3 items (ul or ol)",
+          "checks": [
+            {
+              "type": "count",
+              "selector": "li",
+              "min": 3
+            },
+            {
+              "type": "source-inside",
+              "tag": "li",
+              "parent": "ul|ol"
+            }
+          ],
+          "hints": [
+            "ul is a bulleted list, ol a numbered one.",
+            "Each item is an li inside the ul or ol."
+          ],
+          "spec": "5d HTML · <ul> <ol> <li>"
+        },
+        {
+          "text": "Add an image with src, alt, height and width",
+          "checks": [
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "src",
+              "notEmpty": true
+            },
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "alt",
+              "notEmpty": true,
+              "notOneOf": [
+                "image",
+                "picture",
+                "photo",
+                "img"
+              ]
+            },
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "height",
+              "notEmpty": true
+            },
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "width",
+              "notEmpty": true
+            }
+          ],
+          "hints": [
+            "You can use images/gaming-1.png, images/music-1.png or any https:// picture.",
+            "alt describes the picture for someone who can't see it.",
+            "<img src=\"images/music-1.png\" alt=\"…\" height=\"150\" width=\"200\">"
+          ],
+          "spec": "5d HTML · <img> src alt height width"
+        },
+        {
+          "text": "Add a link to a useful website",
+          "checks": [
+            {
+              "type": "attr",
+              "selector": "a",
+              "attr": "href",
+              "startsWith": "https://"
+            },
+            {
+              "type": "text",
+              "selector": "a",
+              "notEmpty": true
+            }
+          ],
+          "hints": [
+            "href holds the address. It needs https:// at the start.",
+            "The link text should say where it goes."
+          ],
+          "spec": "5d HTML · <a href>"
+        }
+      ],
+      "challenges": [
+        {
+          "type": "fix",
+          "id": "l2-fix",
+          "title": "Broken list and picture",
+          "prompt": "This page has two mistakes. Fix index.html so every check passes.",
+          "edit": "index.html",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Revision tips</title>\n</head>\n<body>\n  <h1>Revision tips</h1>\n  <li>Start early</li>\n  <li>Test yourself</li>\n  <li>Sleep well</li>\n  <img src=\"images/reading-1.png\" height=\"150\" width=\"200\">\n</body>\n</html>\n"
+          },
+          "checks": [
+            {
+              "type": "source-inside",
+              "tag": "li",
+              "parent": "ul|ol"
+            },
+            {
+              "type": "attr",
+              "selector": "img",
+              "attr": "alt",
+              "notEmpty": true,
+              "notOneOf": [
+                "image",
+                "picture"
+              ]
+            }
+          ],
+          "hints": [
+            "Every li must sit inside a ul or an ol.",
+            "Which attribute describes an image for a screen reader?"
+          ],
+          "spec": "amend · <li> <img>"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "External stylesheet",
+      "intro": "Styles belong in their own file. You now have style.css: link it to your page, then write rules in it.",
+      "addFiles": {
+        "style.css": "/* The styles for your {brief} go here. */\n\n"
+      },
+      "goals": [
+        {
+          "text": "Link style.css in the head",
+          "checks": [
+            {
+              "type": "links-file",
+              "file": "style.css"
+            },
+            {
+              "type": "source-inside",
+              "tag": "link",
+              "parent": "head"
+            }
+          ],
+          "hints": [
+            "The link tag goes in head, in index.html.",
+            "<link rel=\"stylesheet\" href=\"style.css\">"
+          ],
+          "spec": "5d HTML · <link>"
+        },
+        {
+          "text": "Give body a font-family in style.css",
+          "checks": [
+            {
+              "type": "css-file-syntax"
+            },
+            {
+              "type": "css-rule",
+              "selector": "body",
+              "property": "font-family"
+            },
+            {
+              "type": "style",
+              "selector": "body",
+              "property": "font-family",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "Write a rule: selector { property: value; }",
+            "body { font-family: Verdana, sans-serif; }"
+          ],
+          "spec": "5d CSS · element selector, font-family"
+        },
+        {
+          "text": "Give h1 a colour by name and a font-size",
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": "h1",
+              "property": "color"
+            },
+            {
+              "type": "css-rule",
+              "selector": "h1",
+              "property": "font-size"
+            },
+            {
+              "type": "style",
+              "selector": "h1",
+              "property": "color",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "CSS spells it color.",
+            "h1 { color: navy; font-size: 32px; }"
+          ],
+          "spec": "5d CSS · color (named), font-size"
+        },
+        {
+          "text": "Give body a background-color as a hex colour",
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": "body",
+              "property": "background-color",
+              "hex": true
+            },
+            {
+              "type": "style",
+              "selector": "body",
+              "property": "background-color",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "A hex colour is # then 6 digits, e.g. #F4F7FB.",
+            "body { background-color: #F4F7FB; }"
+          ],
+          "spec": "5d CSS · color (hex), background-color"
+        },
+        {
+          "text": "Style one element with a style attribute in index.html",
+          "checks": [
+            {
+              "type": "inline-style"
+            }
+          ],
+          "hints": [
+            "Inline styles go inside the opening tag.",
+            "<p style=\"color:blue;\">"
+          ],
+          "spec": "5d CSS · style attribute"
+        }
+      ],
+      "challenges": [
+        {
+          "type": "exam",
+          "id": "l3-cascade",
+          "title": "Which colour wins?",
+          "question": "style.css contains h1 { color: blue; } and index.html contains <h1 style=\"color:red;\">Hello</h1>. State the colour of the heading and explain why.",
+          "marks": 2,
+          "markScheme": [
+            "Red",
+            "The style attribute (inline style) overrides / is more specific than the rule in the external style sheet"
+          ],
+          "spec": "interpret · inline style vs style sheet",
+          "code": "h1 { color: blue; }\n\n<h1 style=\"color:red;\">Hello</h1>"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Classes and identifiers",
+      "intro": "Use an id for the one menu bar at the top, and a class for boxes you might repeat. The result box will show your app's answer later.",
+      "goals": [
+        {
+          "text": "Put your h1 inside a div with id=\"menu\"",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "div#menu"
+            },
+            {
+              "type": "exists",
+              "selector": "#menu h1"
+            }
+          ],
+          "hints": [
+            "<div id=\"menu\"> <h1>…</h1> </div>",
+            "An id is unique: only one element can have it."
+          ],
+          "spec": "5d HTML · id"
+        },
+        {
+          "text": "Style #menu with a background-color in style.css",
+          "checks": [
+            {
+              "type": "css-kind",
+              "kind": "id"
+            },
+            {
+              "type": "css-rule",
+              "selector": "#menu",
+              "property": "background-color"
+            },
+            {
+              "type": "style",
+              "selector": "#menu",
+              "property": "background-color",
+              "notDefault": true
+            }
+          ],
+          "hints": [
+            "# selects by id.",
+            "#menu { background-color: #A2441B; }"
+          ],
+          "spec": "5d CSS · identifier selector"
+        },
+        {
+          "text": "Add a div with class=\"infoBox\" and put a sentence in it",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "div.infoBox"
+            }
+          ],
+          "hints": [
+            "<div class=\"infoBox\">Type below to try it.</div>",
+            "A class can be used on many elements. In level 5 you'll add a second, empty infoBox for results."
+          ],
+          "spec": "5d HTML · class"
+        },
+        {
+          "text": "Give .infoBox a border with border-style, border-width and border-color",
+          "checks": [
+            {
+              "type": "css-kind",
+              "kind": "class"
+            },
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "border-style"
+            },
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "border-width"
+            },
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "border-color"
+            }
+          ],
+          "hints": [
+            ". selects by class.",
+            "A border needs border-style or it won't show.",
+            ".infoBox { border-style: solid; border-width: 3px; border-color: gold; }"
+          ],
+          "spec": "5d CSS · class selector, border-*"
+        },
+        {
+          "text": "Set a width for .infoBox",
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "width"
+            }
+          ],
+          "hints": [
+            ".infoBox { width: 320px; }"
+          ],
+          "spec": "5d CSS · width"
+        },
+        {
+          "text": "Set a height for .infoBox",
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "height"
+            }
+          ],
+          "hints": [
+            "Too small a height and text spills out. Try 60px."
+          ],
+          "spec": "5d CSS · height",
+          "stretch": true
+        }
+      ],
+      "challenges": [
+        {
+          "type": "fix",
+          "id": "l4-fix",
+          "title": "The menu won't change colour",
+          "prompt": "The menu bar should be dark blue, but it isn't. Fix style.css.",
+          "edit": "style.css",
+          "files": {
+            "index.html": "<div id=\"menu\">\n  <h1>Quiz night</h1>\n</div>\n",
+            "style.css": ".menu {\n  background-color: #163351;\n  color: white;\n}\n"
+          },
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": "#menu",
+              "property": "background-color"
+            }
+          ],
+          "hints": [
+            "Look at how the div is named in index.html: id or class?",
+            "# selects an id; . selects a class."
+          ],
+          "spec": "amend · #id vs .class"
+        },
+        {
+          "type": "exam",
+          "id": "l4-selectors",
+          "title": "Selectors",
+          "question": "Explain the difference between the selectors #menu and .infoBox in a style sheet.",
+          "marks": 2,
+          "markScheme": [
+            "#menu selects the (one) element whose id is menu",
+            ".infoBox selects every element whose class is infoBox",
+            "An id must be unique on a page; a class can be used many times"
+          ],
+          "spec": "read · #id, .class"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Forms",
+      "intro": "Your {brief} needs input. Add a form with a text box and a button, and an empty box for the answer.",
+      "goals": [
+        {
+          "text": "Add a form with id=\"app\"",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "form#app"
+            }
+          ],
+          "hints": [
+            "<form id=\"app\"> … </form>",
+            "Your JavaScript will find the form by this id."
+          ],
+          "spec": "5d HTML · <form>"
+        },
+        {
+          "text": "Inside the form, add a text box with name=\"{inputName}\"",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "form#app input"
+            },
+            {
+              "type": "exists",
+              "selector": "form#app input[type=text]"
+            },
+            {
+              "type": "exists",
+              "selector": "form#app input[type=text][name={inputName}]"
+            }
+          ],
+          "hints": [
+            "A text box is <input type=\"text\">.",
+            "The name identifies the box: <input type=\"text\" name=\"{inputName}\">"
+          ],
+          "spec": "5d HTML · <input type=\"text\" name>"
+        },
+        {
+          "text": "Add a submit button to the form",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "form#app input[type=submit]"
+            }
+          ],
+          "hints": [
+            "<input type=\"submit\" value=\"Go\">"
+          ],
+          "spec": "5d HTML · <input type=\"submit\">"
+        },
+        {
+          "text": "Below the form, add an empty div with id=\"result\" and class=\"infoBox\"",
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "div#result"
+            },
+            {
+              "type": "exists",
+              "selector": "#result.infoBox"
+            }
+          ],
+          "hints": [
+            "An element can have an id and a class: <div id=\"result\" class=\"infoBox\"></div>",
+            "Leave it empty. Your JavaScript fills it in level 6."
+          ],
+          "spec": "5d HTML · id and class together"
+        }
+      ],
+      "challenges": [
+        {
+          "type": "fix",
+          "id": "l5-fix",
+          "title": "A box with no name",
+          "prompt": "The JavaScript reads form.word.value, but the text box can't be found. Fix index.html.",
+          "edit": "index.html",
+          "files": {
+            "index.html": "<form id=\"app\">\n  <p>Type a word:</p>\n  <input type=\"text\">\n  <input type=\"submit\" value=\"Go\">\n</form>\n"
+          },
+          "checks": [
+            {
+              "type": "exists",
+              "selector": "input[type=text][name=word]"
+            }
+          ],
+          "hints": [
+            "Which attribute identifies an input so code can find it?",
+            "<input type=\"text\" name=\"word\">"
+          ],
+          "spec": "amend · <input name>"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Make it respond",
+      "intro": "Add a script so your app responds when someone presses the button. {note} The shaded lines that read the form are given.",
+      "addFiles": {
+        "script.js": "// The JavaScript for your {brief} goes here.\n\n"
+      },
+      "given": [
+        {
+          "file": "script.js",
+          "code": "const form = document.getElementById(\"app\"); // given\nform.onsubmit = function () { // given\n  const value = form.{inputName}.value; // given\n\n  return false; // given\n}; // given\n"
+        }
+      ],
+      "goals": [
+        {
+          "text": "Load script.js with a <script> tag at the end of body",
+          "checks": [
+            {
+              "type": "links-file",
+              "file": "script.js"
+            },
+            {
+              "type": "source-inside",
+              "tag": "script",
+              "parent": "body"
+            },
+            {
+              "type": "js-syntax"
+            }
+          ],
+          "hints": [
+            "script.js is a separate file, so the script tag needs src.",
+            "Put it just before </body>, so the form exists when the script runs.",
+            "<script src=\"script.js\"></script>"
+          ],
+          "spec": "5d HTML · <script>"
+        },
+        {
+          "text": "Write a function {fn} that returns the right answer",
+          "checks": [
+            {
+              "type": "js-defines",
+              "name": "{fn}"
+            },
+            {
+              "type": "js-call",
+              "fn": "{fn}",
+              "tests": "brief"
+            }
+          ],
+          "hints": [
+            "Write the function above the given code, not inside it.",
+            "Start with a variable for the answer, change it with if statements, then return it.",
+            "In pseudocode: function {fn}(…) … return … endfunction. JavaScript uses { } instead of endfunction."
+          ],
+          "spec": "pseudocode · function … endfunction"
+        },
+        {
+          "text": "Show the answer inside #result using getElementById and innerHTML",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "getElementById"
+            },
+            {
+              "type": "js-uses",
+              "construct": "innerHTML"
+            },
+            {
+              "type": "js-no-error"
+            },
+            {
+              "type": "js-event",
+              "form": "#app",
+              "tests": "brief",
+              "expect": "innerHTML",
+              "selector": "#result"
+            }
+          ],
+          "hints": [
+            "Get the element: chosenElement = document.getElementById(\"result\");",
+            "Then set what it shows: chosenElement.innerHTML = …;",
+            "Do this inside the given function, before return false, after calling {fn}(value)."
+          ],
+          "spec": "5d JS · output by changing an element"
+        },
+        {
+          "text": "If the box is empty, warn the user with alert()",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "alert"
+            },
+            {
+              "type": "js-event",
+              "form": "#app",
+              "tests": [
+                {
+                  "input": "",
+                  "expect": ""
+                }
+              ],
+              "expect": "alert"
+            }
+          ],
+          "hints": [
+            "An empty text box gives the empty string \"\".",
+            "if (value == \"\") { alert(\"Type something first\"); }"
+          ],
+          "spec": "5d JS · output by alert box",
+          "stretch": true
+        }
+      ],
+      "challenges": [
+        {
+          "type": "trace",
+          "id": "l6-trace",
+          "title": "A running total",
+          "prompt": "What does the page show?",
+          "output": "page",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let total = 0;\nfor (let i = 1; i <= 4; i++) {\n  total = total + i;\n}\ndocument.write(total);\n"
+          },
+          "spec": "interpret · for loop, document.write"
+        },
+        {
+          "type": "exam",
+          "id": "l6-exam",
+          "title": "Output to an element",
+          "question": "The variable score holds a number. Write JavaScript that displays score in the HTML element with the id result.",
+          "marks": 2,
+          "markScheme": [
+            "Uses document.getElementById(\"result\") to get the element",
+            "Sets the element's .innerHTML to score (one statement is fine)"
+          ],
+          "spec": "write · getElementById, innerHTML"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Logic",
+      "intro": "Upgrade your app with the structures from the pseudocode guide. {note} Open Pseudocode ↔ JS above the editor if you need it.",
+      "goals": [
+        {
+          "text": "Upgrade {fn} so it passes the level 7 tests",
+          "checks": [
+            {
+              "type": "js-defines",
+              "name": "{fn}"
+            },
+            {
+              "type": "js-call",
+              "fn": "{fn}",
+              "tests": "brief"
+            }
+          ],
+          "hints": [
+            "Read the level intro again: it says exactly what {fn} should return now.",
+            "Test it: add console.log({fn}(…)) and look in the Console."
+          ],
+          "spec": "pseudocode · selection, iteration"
+        },
+        {
+          "text": "Store values in an array",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "array"
+            }
+          ],
+          "hints": [
+            "let items = [\"a\", \"b\", \"c\"];",
+            "items[0] is the first value; items.length is how many."
+          ],
+          "spec": "pseudocode · arrays"
+        },
+        {
+          "text": "Use a for loop",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "for"
+            }
+          ],
+          "hints": [
+            "for (let i = 0; i < items.length; i++) { … items[i] … }",
+            "Pseudocode for i = 0 to n - 1 … next i becomes this loop."
+          ],
+          "spec": "pseudocode · for … next"
+        },
+        {
+          "text": "Use a switch statement",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "switch"
+            }
+          ],
+          "hints": [
+            "switch (x) { case 1: …; break; default: … }",
+            "Every case needs break; or it runs on into the next one."
+          ],
+          "spec": "pseudocode · switch … case … endswitch"
+        },
+        {
+          "text": "Show the new result in #result",
+          "checks": [
+            {
+              "type": "js-no-error"
+            },
+            {
+              "type": "js-event",
+              "form": "#app",
+              "tests": "brief",
+              "expect": "innerHTML",
+              "selector": "#result"
+            }
+          ],
+          "hints": [
+            "Your level 6 code may already do this. Check what it shows now."
+          ],
+          "spec": "5d JS · innerHTML"
+        },
+        {
+          "text": "Use string handling: .length or .substring()",
+          "checks": [
+            {
+              "type": "js-uses",
+              "construct": "stringLength"
+            }
+          ],
+          "hints": [
+            "value.length is the number of characters in a string."
+          ],
+          "spec": "pseudocode · string handling",
+          "stretch": true
+        }
+      ],
+      "challenges": [
+        {
+          "type": "trace",
+          "id": "l7-trace",
+          "title": "Backwards",
+          "prompt": "What does the page show?",
+          "output": "page",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let word = \"SNAKE\";\nlet out = \"\";\nlet i = word.length - 1;\nwhile (i >= 0) {\n  out = out + word.substring(i, i + 1);\n  i = i - 1;\n}\ndocument.write(out);\n"
+          },
+          "spec": "interpret · while, substring"
+        },
+        {
+          "type": "exam",
+          "id": "l7-exam",
+          "title": "Pseudocode to JavaScript",
+          "question": "Rewrite this pseudocode in JavaScript, so it shows the numbers in an alert box one at a time.",
+          "marks": 3,
+          "markScheme": [
+            "for loop header: for (let i = 1; i <= 5; i++)",
+            "Loop body in { } calling alert(i * 2)",
+            "Correct range: starts at 1 and includes 5 (<= 5, or < 6)"
+          ],
+          "spec": "write · for loop from pseudocode",
+          "code": "for i = 1 to 5\n    print(i * 2)\nnext i"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Debug and amend",
+      "intro": "Someone else built a mark totaller and it's full of bugs, one file at a time. Fix each one. Your own app must still pass everything.",
+      "goals": [
+        {
+          "text": "Everything from levels 1 to 7 still works in your app",
+          "checks": [
+            {
+              "type": "allPrevious"
+            }
+          ],
+          "hints": [
+            "Press Check my code: the message names the level that needs fixing."
+          ],
+          "spec": "regression"
+        }
+      ],
+      "challenges": [
+        {
+          "type": "fix",
+          "id": "l8-html",
+          "title": "index.html: no styles",
+          "prompt": "The page has no styles at all. Fix the link in index.html.",
+          "edit": "index.html",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Mark totaller</title>\n  <link href=\"styles.css\">\n</head>\n<body>\n  <div id=\"menu\"><h1>Mark totaller</h1></div>\n  <form id=\"app\">\n    <input type=\"text\" name=\"mark\">\n    <input type=\"submit\" value=\"Add\">\n  </form>\n  <div id=\"result\" class=\"infoBox\"></div>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "style.css": "#menu { background-color: #163351; color: white; }\n"
+          },
+          "checks": [
+            {
+              "type": "links-file",
+              "file": "style.css"
+            }
+          ],
+          "hints": [
+            "Two things: the file's name, and the attribute that says it's a stylesheet.",
+            "<link rel=\"stylesheet\" href=\"style.css\">"
+          ],
+          "spec": "amend · <link>"
+        },
+        {
+          "type": "fix",
+          "id": "l8-css",
+          "title": "style.css: missing border and menu",
+          "prompt": "The result box should have a gold border and the menu should be navy. Fix style.css.",
+          "edit": "style.css",
+          "files": {
+            "index.html": "<div id=\"menu\"><h1>Mark totaller</h1></div>\n<div id=\"result\" class=\"infoBox\">Total: 0</div>\n",
+            "style.css": ".menu {\n  background-color: #163351;\n}\n.infoBox {\n  border-width: 3px;\n  border-color: #F2B533;\n}\n"
+          },
+          "checks": [
+            {
+              "type": "css-rule",
+              "selector": "#menu",
+              "property": "background-color"
+            },
+            {
+              "type": "css-rule",
+              "selector": ".infoBox",
+              "property": "border-style"
+            }
+          ],
+          "hints": [
+            "The menu is an id in index.html.",
+            "Without border-style, a border doesn't show."
+          ],
+          "spec": "amend · selectors, border-style"
+        },
+        {
+          "type": "fix",
+          "id": "l8-js",
+          "title": "script.js: wrong total",
+          "prompt": "Typing 5 should show Total: 35 (5 + 10 + 20). Find the two bugs in script.js.",
+          "edit": "script.js",
+          "files": {
+            "index.html": "<form id=\"app\">\n  <input type=\"text\" name=\"mark\">\n  <input type=\"submit\" value=\"Add\">\n</form>\n<div id=\"result\"></div>\n<script src=\"script.js\"></script>\n",
+            "script.js": "function total(marks) {\n  let sum = 0;\n  for (let i = 1; i < marks.length; i++) {\n    sum = sum + marks[i];\n  }\n  return sum;\n}\n\nconst form = document.getElementById(\"app\");\nform.onsubmit = function () {\n  const n = Number(form.mark.value);\n  document.getElementByID(\"result\").innerHTML = \"Total: \" + total([n, 10, 20]);\n  return false;\n};\n"
+          },
+          "checks": [
+            {
+              "type": "js-syntax"
+            },
+            {
+              "type": "js-call",
+              "fn": "total",
+              "tests": [
+                {
+                  "args": [
+                    [
+                      1,
+                      2,
+                      3
+                    ]
+                  ],
+                  "returns": 6
+                },
+                {
+                  "args": [
+                    [
+                      5
+                    ]
+                  ],
+                  "returns": 5
+                }
+              ]
+            },
+            {
+              "type": "js-event",
+              "form": "#app",
+              "tests": [
+                {
+                  "input": "5",
+                  "expect": "35"
+                }
+              ],
+              "expect": "innerHTML",
+              "selector": "#result"
+            }
+          ],
+          "hints": [
+            "Arrays start at index 0. Where does the loop start?",
+            "JavaScript is case-sensitive: check every method name."
+          ],
+          "spec": "amend · off-by-one, getElementById"
+        },
+        {
+          "type": "exam",
+          "id": "l8-exam",
+          "title": "How you debugged",
+          "question": "Choose one error you fixed in this level. Explain how you found it and how you fixed it.",
+          "marks": 3,
+          "markScheme": [
+            "Identifies a specific error (e.g. loop started at 1, getElementByID, .menu for an id, missing rel/border-style)",
+            "Describes how it was found (e.g. console error message, tracing values, comparing output with expected)",
+            "Describes the fix and why it works"
+          ],
+          "spec": "read · debugging"
+        }
+      ]
+    },
+    {
+      "id": "boss",
+      "title": "Exam boss",
+      "intro": "An exam-style set of unseen questions. Aim for about 30 minutes. Trace before you run, and write your answer before you open each mark scheme.",
+      "goals": [],
+      "challenges": [
+        {
+          "type": "exam",
+          "id": "b-purpose",
+          "title": "Three languages",
+          "question": "Describe the purpose of HTML, CSS and JavaScript in a web page.",
+          "marks": 3,
+          "markScheme": [
+            "HTML: the structure and content of the page (headings, paragraphs, forms…)",
+            "CSS: the presentation / appearance / layout (colours, fonts, sizes)",
+            "JavaScript: behaviour / interactivity, e.g. responding to input, changing the page"
+          ],
+          "spec": "read · purpose of HTML, CSS, JS"
+        },
+        {
+          "type": "trace",
+          "id": "b-trace-1",
+          "title": "Selection",
+          "prompt": "What does the page show?",
+          "output": "page",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let mark = 67;\nlet grade = \"\";\nif (mark >= 70) {\n  grade = \"A\";\n} else if (mark >= 60) {\n  grade = \"B\";\n} else {\n  grade = \"C\";\n}\ndocument.write(grade);\n"
+          },
+          "spec": "interpret · if / else if"
+        },
+        {
+          "type": "trace",
+          "id": "b-trace-2",
+          "title": "Biggest",
+          "prompt": "What does the page show?",
+          "output": "page",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let nums = [4, 7, 2, 9, 5];\nlet biggest = nums[0];\nfor (let i = 1; i < nums.length; i++) {\n  if (nums[i] > biggest) {\n    biggest = nums[i];\n  }\n}\ndocument.write(biggest);\n"
+          },
+          "spec": "interpret · array, for"
+        },
+        {
+          "type": "trace",
+          "id": "b-trace-3",
+          "title": "Into the page",
+          "prompt": "What does the page show?",
+          "output": "page",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <p id=\"out\">Start</p>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "// toUpperCase() returns the string in capital letters\nlet s = \"web\";\nlet t = s.toUpperCase() + s.length;\ndocument.getElementById(\"out\").innerHTML = t;\n"
+          },
+          "spec": "interpret · innerHTML, string length"
+        },
+        {
+          "type": "exam",
+          "id": "b-form",
+          "title": "Write a form",
+          "question": "Write the HTML for a form containing a text box named email and a submit button.",
+          "marks": 3,
+          "markScheme": [
+            "<form> … </form> around the inputs",
+            "<input type=\"text\" name=\"email\">",
+            "<input type=\"submit\">"
+          ],
+          "spec": "write · <form> <input>"
+        },
+        {
+          "type": "exam",
+          "id": "b-css",
+          "title": "Write a rule",
+          "question": "Write a CSS rule so that every element with the class warning has a solid red border 2px wide.",
+          "marks": 3,
+          "markScheme": [
+            "Selector .warning (class selector with a dot)",
+            "border-style: solid; and border-width: 2px;",
+            "border-color: red; with correct { } : ; syntax"
+          ],
+          "spec": "write · class selector, border-*"
+        },
+        {
+          "type": "fix",
+          "id": "b-fix",
+          "title": "Countdown",
+          "prompt": "This should show 3 2 1 Go! in the page, but the loop never stops. Fix script.js.",
+          "edit": "script.js",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <p id=\"out\"></p>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let n = 3;\nlet text = \"\";\nwhile (n > 0) {\n  text = text + n + \" \";\n  n = n + 1;\n}\ndocument.getElementById(\"out\").innerHTML = text + \"Go!\";\n"
+          },
+          "checks": [
+            {
+              "type": "js-syntax"
+            },
+            {
+              "type": "js-no-error"
+            }
+          ],
+          "hints": [
+            "Trace n: does it ever reach 0?"
+          ],
+          "spec": "amend · condition-controlled loop"
+        },
+        {
+          "type": "exam",
+          "id": "b-output",
+          "title": "Ways to output",
+          "question": "Give two different ways JavaScript can output \"Hello\" to the user. Write a line of code for each.",
+          "marks": 2,
+          "markScheme": [
+            "alert(\"Hello\");",
+            "document.write(\"Hello\");",
+            "document.getElementById(\"…\").innerHTML = \"Hello\";"
+          ],
+          "spec": "write · output methods"
+        }
+      ]
+    }
+  ]
+}

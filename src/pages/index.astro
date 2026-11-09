@@ -27,7 +27,7 @@ const first = lessons[0];
             <li class="card lesson">
               <span class="code-block num">{String(i + 1).padStart(2, '0')}</span>
               <div class="info">
-                <p class="eyebrow">Year {lesson.year} · about {lesson.minutes} minutes · {lesson.levels.length} levels</p>
+                <p class="eyebrow">{lesson.briefs ? "Sixth Form" : `Year ${lesson.year}`} · about {lesson.minutes} minutes · {lesson.levels.length} levels</p>
                 <h3>
                   <a href={url(`lessons/${lesson.id}/`)}>{lesson.title}</a>
                 </h3>

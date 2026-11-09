@@ -1,0 +1,81 @@
+---
+/**
+ * Brief tiles for the Sixth Form lesson. Uses the same markup hooks as
+ * HobbyPicker (data-hobby-picker, .tile, data-hobby), so the lesson page
+ * script works for both. The choice is saved in localStorage.
+ */
+import type { Brief } from '../lesson-schema';
+
+interface Props {
+  briefs: Brief[];
+}
+const { briefs } = Astro.props;
+---
+<div class="hobby-picker brief-picker" data-hobby-picker>
+  <div class="tiles" role="group" aria-label="Briefs">
+    {
+      briefs.map((b) => (
+        <button type="button" class="tile" data-hobby={b.id} aria-pressed="false">
+          <span class="name">{b.name}</span>
+          <span class="pitch">{b.pitch}</span>
+          <code class="fn">{b.fn}(…)</code>
+        </button>
+      ))
+    }
+  </div>
+  <!-- The shared lesson script expects this; briefs have no "type your own". -->
+  <div data-own hidden><input type="text" aria-hidden="true" tabindex="-1" /></div>
+</div>
+
+<style>
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 16px;
+    border: 3px solid var(--navy);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--navy);
+    font: 400 16px var(--body);
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--navy);
+    min-height: 44px;
+  }
+  .name {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .pitch {
+    color: #3a4654;
+  }
+  .fn {
+    font: 14px var(--mono);
+    background: #f3f6fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .tile:hover {
+    background: #f3f7fb;
+  }
+  .tile[aria-pressed='true'] {
+    background: var(--gold);
+    box-shadow: inset -4px -4px 0 var(--gold-dark), inset 4px 4px 0 var(--gold-light), 0 4px 0 var(--navy);
+  }
+  .tile[aria-pressed='true'] .pitch {
+    color: var(--navy);
+  }
+  .tile[aria-pressed='true'] .fn {
+    background: var(--gold-light);
+  }
+  .tile[aria-pressed='true'] .name::before {
+    content: '✓ ';
+  }
+</style>

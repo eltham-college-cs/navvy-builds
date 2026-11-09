@@ -1,0 +1,94 @@
+---
+/** OCR exam pseudocode beside the JavaScript equivalent (SPEC-SIXTH-FORM § 8, level 7). */
+const rows: [string, string, string][] = [
+  ['Variable and output', 'name = "Ada"\nprint("Hi " + name)', 'let name = "Ada";\nconsole.log("Hi " + name);'],
+  ['Constant', 'const VAT = 0.2', 'const VAT = 0.2;'],
+  [
+    'Selection',
+    'if score == 0 then\n    print("Weak")\nelseif score == 1 then\n    print("OK")\nelse\n    print("Strong")\nendif',
+    'if (score == 0) {\n  result = "Weak";\n} else if (score == 1) {\n  result = "OK";\n} else {\n  result = "Strong";\n}',
+  ],
+  [
+    'Switch',
+    'switch unit:\n    case "km":\n        x = n * 5 / 8\n    default:\n        x = n\nendswitch',
+    'switch (unit) {\n  case "km":\n    x = n * 5 / 8;\n    break;\n  default:\n    x = n;\n}',
+  ],
+  ['Count-controlled loop', 'for i = 0 to 7\n    print(i)\nnext i', 'for (let i = 0; i <= 7; i++) {\n  console.log(i);\n}'],
+  ['Condition-controlled loop', 'while total < 100\n    total = total * 2\nendwhile', 'while (total < 100) {\n  total = total * 2;\n}'],
+  ['Post-condition loop', 'do\n    n = n - 1\nuntil n == 0', 'do {\n  n = n - 1;\n} while (n != 0);'],
+  ['Function', 'function triple(n)\n    return n * 3\nendfunction', 'function triple(n) {\n  return n * 3;\n}'],
+  ['Procedure', 'procedure greet(name)\n    print("Hi " + name)\nendprocedure', 'function greet(name) {\n  alert("Hi " + name);\n}'],
+  ['Array', 'array names[3]\nnames[0] = "Ada"', 'let names = ["", "", ""];\nnames[0] = "Ada";'],
+  ['String length and substring', 'word.length\nword.substring(0, 3)', 'word.length\nword.substring(0, 3)'],
+  ['Logical operators', 'if a AND NOT b then', 'if (a && !b) {'],
+];
+---
+<div class="pseudo">
+  <table>
+    <thead>
+      <tr><th scope="col">Structure</th><th scope="col">OCR pseudocode</th><th scope="col">JavaScript</th></tr>
+    </thead>
+    <tbody>
+      {
+        rows.map(([name, pseudo, js]) => (
+          <tr>
+            <th scope="row">{name}</th>
+            <td><pre>{pseudo}</pre></td>
+            <td><pre>{js}</pre></td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="pseudo-note">Watch for: <code>until</code> becomes <code>while</code> with the condition reversed; <code>for … to 7</code> includes 7, so JavaScript uses <code>&lt;=</code>; JavaScript needs <code>break</code> at the end of each <code>case</code>.</p>
+</div>
+
+<style>
+  .pseudo {
+    overflow-x: auto;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 620px;
+    font-size: 15px;
+  }
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: #f3f6fa;
+    position: sticky;
+    top: 0;
+  }
+  tbody th {
+    font-weight: 600;
+    width: 160px;
+  }
+  pre {
+    margin: 0;
+    font: 13px/1.5 var(--mono);
+    white-space: pre;
+  }
+  .pseudo-note {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 10px 0 0;
+  }
+  .pseudo-note code {
+    font: 13px var(--mono);
+    background: #eef3f9;
+    padding: 0 4px;
+    border-radius: 3px;
+  }
+</style>

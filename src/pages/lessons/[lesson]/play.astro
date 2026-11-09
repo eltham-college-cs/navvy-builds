@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import Builder from '../../../components/Builder.astro';
+import WebBuilder from '../../../components/WebBuilder.astro';
 import LevelMap from '../../../components/LevelMap.astro';
 import { config } from '../../../config';
 import type { Lesson } from '../../../lesson-schema';
@@ -14,6 +15,7 @@ export async function getStaticPaths() {
 
 const { lesson } = Astro.props as { lesson: Lesson };
 const levels = lesson.levels.map((l) => ({ id: l.id, title: l.title }));
+const sixth = !!lesson.briefs;
 const data = {
   lesson,
   lessonPath: url(`lessons/${lesson.id}/`),
@@ -22,28 +24,41 @@ const data = {
   imagesPerHobby: config.imagesPerHobby,
 };
 ---
-<Base title={lesson.title} current="lesson" app description={lesson.summary}>
+<Base title={lesson.title} current="lesson" app description={lesson.summary} bodyClass={sixth ? 'sixth' : undefined}>
   <Fragment slot="header">
     <a class="lesson-link" href={data.lessonPath}>{lesson.title}</a>
     <LevelMap lessonId={lesson.id} levels={levels} compact label="Levels in this lesson" />
   </Fragment>
-  <Builder />
-  <script type="application/json" id="builder-data" set:html={JSON.stringify(data)} />
+  {sixth ? <WebBuilder /> : <Builder />}
+  <script type="application/json" id="builder-data" set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />
 </Base>
 
 <script>
-  import { startBuilder } from '../../../lib/builder';
-
   const raw = JSON.parse(document.getElementById('builder-data')!.textContent!);
   const abs = (path: string) => new URL(path, location.origin).href;
-  startBuilder({
-    lesson: raw.lesson,
-    siteUrl: abs(import.meta.env.BASE_URL.replace(/\/?$/, '/')),
-    libraryUrl: abs(raw.imagesPath),
-    lessonUrl: raw.lessonPath,
-    mascotName: raw.mascotName,
-    imagesPerHobby: raw.imagesPerHobby,
-  });
+  const siteUrl = abs(import.meta.env.BASE_URL.replace(/\/?$/, '/'));
+  if (raw.lesson.briefs) {
+    void import('../../../lib/web-builder').then(({ startWebBuilder }) =>
+      startWebBuilder({
+        lesson: raw.lesson,
+        siteUrl,
+        libraryUrl: abs(raw.imagesPath),
+        lessonUrl: raw.lessonPath,
+        mascotName: raw.mascotName,
+      }),
+    );
+  } else {
+    void import('../../../lib/builder').then(({ startBuilder }) =>
+      startBuilder({
+        lesson: raw.lesson,
+        siteUrl,
+        libraryUrl: abs(raw.imagesPath),
+        lessonUrl: raw.lessonPath,
+        mascotName: raw.mascotName,
+        imagesPerHobby: raw.imagesPerHobby,
+      }),
+    );
+  }
 </script>
 
 <style>

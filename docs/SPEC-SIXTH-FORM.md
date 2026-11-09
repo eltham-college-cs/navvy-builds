@@ -95,7 +95,8 @@ src/
 ```
 
 New dependencies: `acorn` and `acorn-walk` (JavaScript parsing and loop
-guard), `fflate` (zip download). All bundled; nothing loaded from a CDN.
+guard), a small zip writer in `src/lib/zip.ts` (no dependency). All bundled;
+nothing loaded from a CDN.
 
 ## 4. Look and feel
 
@@ -258,17 +259,19 @@ Rules:
 
 | # | Title | Build goals (student's app) | Challenges |
 |---|---|---|---|
-| 1 | Page skeleton | Doctype, `html`, `head`, `title` naming the brief, `body`, `h1`, `p` | Trace: which text shows on the tab and which on the page |
+| 1 | Page skeleton | Doctype, `html`, `head`, `title` naming the brief, `body`, `h1`, `p` | Exam: where `title` and `h1` text appear [2] |
 | 2 | Content and links | `h2`/`h3` sections, `div`, `ul` or `ol` with `li`, `img` with `src`, `alt`, `height`, `width`, `a` with `href` | Fix: `li` outside a list and `img` without `alt` |
-| 3 | External stylesheet | Create `style.css`, link it, element rules for `body` and `h1` using `font-family`, `font-size`, `color` (one named, one hex); one inline `style=""` | Trace: inline `style` against a stylesheet rule, which colour wins |
+| 3 | External stylesheet | Create `style.css`, link it, element rules for `body` and `h1` using `font-family`, `font-size`, `color` (one named, one hex); one inline `style=""` | Exam: inline `style` against a stylesheet rule, which colour wins [2] |
 | 4 | Classes and identifiers | `#menu` on the header `div`, `.infoBox` on the result box; `background-color`, `border-style`, `border-width`, `border-color`, `height`, `width` | Fix: `.menu` used for an id; Exam: "Explain the difference between `#menu` and `.infoBox` [2]" |
-| 5 | Forms | `form` with an `id`, `input type="text"` with `name="{inputName}"`, `input type="submit"`, an empty `div id="result"` | Fix: input with no `name` |
+| 5 | Forms | `form id="app"`, `input type="text"` with `name="{inputName}"`, `input type="submit"`, an empty `div id="result" class="infoBox"` | Fix: input with no `name` |
 | 6 | Make it respond | Create `script.js` and load it with `<script>` at the end of `body`; write `{fn}`; output to `#result` with `getElementById` and `innerHTML`; stretch: `alert()` for a bad input | Trace: a `for` loop with `document.write`; Exam: "Write a statement that displays the score in the element with id `result` [2]" |
 | 7 | Logic | Brief's level 7 behaviour (§ 6) using selection, `switch`, a loop and an array | Trace: `while` loop with string handling; Pseudocode panel opens on first visit |
 | 8 | Debug and amend | A broken version of a different brief's app across all three files: fix five planted bugs (syntax, wrong selector, off-by-one, `getElementByID`, missing `link`) | Exam: "Explain how you found and fixed one error [3]" |
 | ★ | Exam boss | No build. A paper of 8–10 unseen items: Trace, Fix and Exam, 25 marks, 30-minute timer shown (not enforced) | All items attempted |
 
-Level 6's full content is in `docs/sixth-form/level-6.example.json`.
+Every level's content is in `src/content/lessons/02-web-app/lesson.json`.
+Level 1 and 3 challenges are Exam questions rather than Trace, because
+Trace compares text output and those levels have no JavaScript yet.
 
 ## 9. The checker
 
@@ -307,8 +310,9 @@ Parse `style.css` and every `style=""` attribute with a small rule parser
 | Comparing the text box value as a number without converting | "Values from a text box are strings. Use `Number(…)` before comparing." |
 
 Write Vitest tests for every check and every mistake in both tables, as
-Year 8 does. Runner tests use jsdom for the harness logic and Playwright
-for one end-to-end run of level 6.
+Year 8 does. The runner itself is checked in a real browser (it needs real
+sandboxed frames); `webapp.test.ts` uses a fake runtime, and proves every
+brief's tests can be met with a reference solution kept only in the test.
 
 ## 10. Accessibility and safety
 

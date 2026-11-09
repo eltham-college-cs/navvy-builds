@@ -84,6 +84,9 @@ export function runCheck(check: Check, page: Page, env?: StyleEnv, lesson?: Less
       }
       return { pass: true };
     }
+    default:
+      // Sixth Form checks (files, JavaScript) are run by webapp.ts.
+      return { pass: false, message: `The ${check.type} check only works in the Sixth Form builder.` };
   }
 }
 

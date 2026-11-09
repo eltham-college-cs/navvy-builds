@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
 
 const tags = [
   ['<!DOCTYPE html>', 'The very first line. Tells the browser this is a modern web page.'],
@@ -43,6 +44,7 @@ const mistakes = [
     <header class="top">
       <p class="eyebrow">Cheat sheet</p>
       <h1>Help</h1>
+      <p>Sixth Form? See the <a href={url('help/sixth-form/')}>web technologies help</a> for JavaScript, external CSS and the pseudocode guide.</p>
       <p>Everything you need for your hobby page, in one place.</p>
       <nav aria-label="On this page" class="toc">
         <a href="#tags">HTML tags</a>
