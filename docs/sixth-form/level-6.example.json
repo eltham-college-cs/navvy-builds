@@ -1,0 +1,175 @@
+{
+  "_comment": "Worked example of the Sixth Form content format (docs/SPEC-SIXTH-FORM.md § 11). Level 6 and the briefs only. Not loaded by the site: the real file will be src/content/lessons/02-web-app/lesson.json.",
+  "id": "web-app",
+  "title": "My web app",
+  "year": 12,
+  "minutes": 240,
+  "summary": "Build a working web app in HTML, CSS and JavaScript, then read, fix and trace code you didn't write.",
+  "theme": "sixth-form",
+  "files": ["index.html", "style.css", "script.js"],
+  "briefs": [
+    {
+      "id": "password",
+      "name": "Password checker",
+      "pitch": "Score how strong a password is.",
+      "title": "Password Checker",
+      "fn": "checkPassword",
+      "inputName": "pwd",
+      "tests": {
+        "6": [
+          { "args": ["abc"], "returns": 0 },
+          { "args": ["abcdefgh"], "returns": 1 },
+          { "args": ["abc1"], "returns": 1 },
+          { "args": ["hunter22"], "returns": 2 },
+          { "input": "hunter22", "expect": "2" },
+          { "input": "abc", "expect": "0" }
+        ]
+      }
+    },
+    {
+      "id": "grades",
+      "name": "Grade calculator",
+      "pitch": "Turn an exam mark into a grade.",
+      "title": "Grade Calculator",
+      "fn": "getGrade",
+      "inputName": "mark",
+      "tests": {
+        "6": [
+          { "args": [39], "returns": "Fail" },
+          { "args": [40], "returns": "Pass" },
+          { "args": [87], "returns": "Pass" },
+          { "input": "40", "expect": "Pass" },
+          { "input": "12", "expect": "Fail" }
+        ]
+      }
+    },
+    {
+      "id": "cafe",
+      "name": "Café order",
+      "pitch": "Work out what an order costs, in pence.",
+      "title": "Café Order",
+      "fn": "orderCost",
+      "inputName": "qty",
+      "tests": {
+        "6": [
+          { "args": ["latte", 1], "returns": 320 },
+          { "args": ["latte", 3], "returns": 960 },
+          { "args": ["latte", 0], "returns": 0 },
+          { "input": "2", "expect": "640" }
+        ]
+      }
+    },
+    {
+      "id": "units",
+      "name": "Unit converter",
+      "pitch": "Convert between kilometres and miles, using 8 km = 5 miles.",
+      "title": "Unit Converter",
+      "fn": "convert",
+      "inputName": "distance",
+      "tests": {
+        "6": [
+          { "args": [8, "km"], "returns": 5 },
+          { "args": [5, "miles"], "returns": 8 },
+          { "args": [0, "km"], "returns": 0 },
+          { "input": "16", "expect": "10" }
+        ]
+      }
+    }
+  ],
+  "starter": "<!-- Build your {brief} here. Start with the doctype. -->\n",
+  "levels": [
+    {
+      "id": 6,
+      "title": "Make it respond",
+      "intro": "Your form does nothing yet. Add a script so the page responds when someone presses the button.",
+      "addFiles": {
+        "script.js": "// The JavaScript for your {brief} goes here.\n\n"
+      },
+      "given": [
+        {
+          "file": "script.js",
+          "code": "const form = document.getElementById(\"checker\"); // given\nform.onsubmit = function () { // given\n  const value = form.{inputName}.value; // given\n\n  return false; // given\n}; // given\n"
+        }
+      ],
+      "goals": [
+        {
+          "text": "Load script.js with a <script> tag at the end of the body",
+          "spec": "5d HTML · <script>",
+          "checks": [
+            { "type": "links-file", "file": "script.js" },
+            { "type": "source-inside", "tag": "script", "parent": "body" },
+            { "type": "js-syntax", "file": "script.js" }
+          ],
+          "hints": [
+            "script.js is a separate file, so the script tag needs a src attribute.",
+            "Put it just before </body>, so the form exists when the script runs.",
+            "<script src=\"script.js\"></script>"
+          ]
+        },
+        {
+          "text": "Write a function {fn} that returns the right answer",
+          "spec": "pseudocode · function … endfunction",
+          "checks": [
+            { "type": "js-defines", "name": "{fn}" },
+            { "type": "js-call", "fn": "{fn}", "tests": "brief" }
+          ],
+          "hints": [
+            "Write the function above the given code, not inside it.",
+            "Start with a variable for the answer, change it with if statements, then return it.",
+            "In pseudocode this is function {fn}(…) … return … endfunction. JavaScript uses { } instead of endfunction."
+          ]
+        },
+        {
+          "text": "Show the answer inside #result using getElementById and innerHTML",
+          "spec": "5d JS · output by changing an element",
+          "checks": [
+            { "type": "js-uses", "construct": "getElementById" },
+            { "type": "js-uses", "construct": "innerHTML" },
+            { "type": "js-no-error" },
+            { "type": "js-event", "form": "#checker", "tests": "brief", "expect": "innerHTML", "selector": "#result" }
+          ],
+          "hints": [
+            "First get hold of the element: chosenElement = document.getElementById(\"…\"). Which id did you give the box in index.html?",
+            "Then set its contents: chosenElement.innerHTML = …",
+            "Call {fn}(value) inside the given handler, before return false."
+          ]
+        },
+        {
+          "text": "Stretch: if the input is empty, warn the user with alert()",
+          "spec": "5d JS · output by alert box",
+          "stretch": true,
+          "checks": [
+            { "type": "js-uses", "construct": "alert" },
+            { "type": "js-event", "form": "#checker", "tests": [{ "input": "", "expect": "" }], "expect": "alert" }
+          ],
+          "hints": [
+            "An empty text box gives the empty string \"\".",
+            "if (value == \"\") { alert(\"…\"); }"
+          ]
+        }
+      ],
+      "challenges": [
+        {
+          "type": "trace",
+          "title": "What does the page show?",
+          "spec": "interpret · for loop, document.write",
+          "files": {
+            "index.html": "<!DOCTYPE html>\n<html>\n<body>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+            "script.js": "let total = 0;\nfor (let i = 1; i <= 4; i++) {\n  total = total + i;\n}\ndocument.write(total);\n"
+          }
+        },
+        {
+          "type": "exam",
+          "title": "Output to an element",
+          "spec": "write · getElementById, innerHTML",
+          "question": "The variable score holds a number. Write JavaScript that displays score in the HTML element with the id result.",
+          "marks": 2,
+          "markScheme": [
+            "Uses document.getElementById(\"result\") to get the element",
+            "Sets .innerHTML of that element to score (one statement is fine)"
+          ]
+        }
+      ]
+    }
+  ]
+}
