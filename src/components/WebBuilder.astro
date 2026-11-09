@@ -520,6 +520,13 @@ import { config } from '../config';
   @media (max-width: 1180px) {
     .wb, .wb.boss { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     .wb-goals { grid-column: 1 / -1; max-height: 40vh; }
+    /* Goals take a row of their own, so let the page scroll rather than
+       squash the editor and preview into what's left of the screen. */
+    body.app.sixth { height: auto; overflow: visible; }
+    .wb { height: auto; }
+    .wb-editor { height: 75vh; min-height: 420px; }
+    .wb-right { height: 75vh; min-height: 560px; }
+    .wb .preview { min-height: 240px; }
   }
   @media (max-width: 900px), (max-height: 600px) {
     .wb, .wb.boss { grid-template-columns: minmax(0, 1fr); height: auto; }
