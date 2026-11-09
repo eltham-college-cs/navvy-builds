@@ -19,6 +19,13 @@ export interface ReportData {
   html: string;
   title: string;
   levels: ReportLevel[];
+  /** Sixth Form: the report's heading, the label for the brief and the files. */
+  docTitle?: string;
+  topicLabel?: string;
+  fileStem?: string;
+  files?: { name: string; code: string }[];
+  /** Sixth Form: one row per challenge, e.g. ["Trace: For loop", "Right first time"]. */
+  challenges?: [string, string][];
 }
 
 export interface CodeRow {
@@ -68,7 +75,7 @@ export function codeRows(code: string, cols: number): CodeRow[] {
   return rows;
 }
 
-export function reportFileName(name: string): string {
+export function reportFileName(name: string, stem = 'my-hobby-page'): string {
   const slug = name
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -77,7 +84,7 @@ export function reportFileName(name: string): string {
     .replace(/^-+|-+$/g, '')
     .slice(0, 40)
     .replace(/-+$/, '');
-  return slug ? `my-hobby-page-report-${slug}.pdf` : 'my-hobby-page-report.pdf';
+  return slug ? `${stem}-report-${slug}.pdf` : `${stem}-report.pdf`;
 }
 
 type Html2Canvas = (typeof import('html2canvas-pro'))['default'];
@@ -170,7 +177,8 @@ export async function downloadReport(data: ReportData): Promise<string> {
   const shot = await capturePage(data.html, html2canvas);
   const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
   const name = pdfSafe(data.name.trim());
-  pdf.setProperties({ title: 'My hobby page report', creator: 'Na<>y Builds' });
+  const docTitle = data.docTitle ?? 'My hobby page';
+  pdf.setProperties({ title: `${docTitle} report`, creator: 'Na<>y Builds' });
 
   const heading = (text: string, y: number) => {
     pdf.setFont('helvetica', 'bold').setFontSize(16).setTextColor(...NAVY);
@@ -179,12 +187,12 @@ export async function downloadReport(data: ReportData): Promise<string> {
 
   /* -------------------------------------------------------- summary */
   pdf.setFont('helvetica', 'bold').setFontSize(24).setTextColor(...NAVY);
-  pdf.text('My hobby page', MARGIN, TOP + 10);
+  pdf.text(docTitle, MARGIN, TOP + 10);
   let y = TOP + 22;
   const made = new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' });
   const facts: [string, string][] = [
     ...(name ? ([['Name', name]] as [string, string][]) : []),
-    ['Hobby', pdfSafe(data.hobby)],
+    [data.topicLabel ?? 'Hobby', pdfSafe(data.hobby)],
     ['Page title', pdfSafe(data.title) || '(no title yet)'],
     ['Made', made],
   ];
@@ -216,6 +224,28 @@ export async function downloadReport(data: ReportData): Promise<string> {
     pdf.text(level.cleared ? 'Cleared' : 'Not yet', PAGE_W - MARGIN, y, { align: 'right' });
   }
   pdf.setDrawColor(...LINE).line(MARGIN, y + 4, PAGE_W - MARGIN, y + 4);
+
+  if (data.challenges?.length) {
+    y += 16;
+    if (y > BOTTOM - 20) {
+      pdf.addPage();
+      y = TOP + 6;
+    }
+    heading('Challenges', y);
+    y += 2;
+    for (const [label, result] of data.challenges) {
+      if (y > BOTTOM - 6) {
+        pdf.addPage();
+        y = TOP;
+      }
+      y += 8;
+      pdf.setFont('helvetica', 'normal').setFontSize(11).setTextColor(...NAVY);
+      pdf.text(pdfSafe(label), MARGIN, y);
+      pdf.setTextColor(...MUTED);
+      pdf.text(pdfSafe(result), PAGE_W - MARGIN, y, { align: 'right' });
+      pdf.setDrawColor(...LINE).setLineWidth(0.3).line(MARGIN, y + 3, PAGE_W - MARGIN, y + 3);
+    }
+  }
 
   /* -------------------------------------------------------- picture */
   pdf.addPage();
@@ -255,31 +285,34 @@ export async function downloadReport(data: ReportData): Promise<string> {
   }
 
   /* ----------------------------------------------------------- code */
-  pdf.addPage();
-  heading('My code', TOP + 6);
   const fontSize = 8.5;
   const rowH = fontSize * 0.3528 * 1.4;
   const gutter = 11;
   const charW = fontSize * 0.3528 * 0.6;
-  const rows = codeRows(data.code, Math.floor((WIDTH - gutter) / charW));
-  const lineCount = rows.filter((r) => r.line !== null).length;
-  pdf.setFont('helvetica', 'normal').setFontSize(10).setTextColor(...MUTED);
-  pdf.text(`my-hobby-page.html, ${lineCount} ${lineCount === 1 ? 'line' : 'lines'}`, MARGIN, TOP + 12);
-  y = TOP + 20;
-  pdf.setFont('courier', 'normal').setFontSize(fontSize);
-  for (const row of rows) {
-    if (y > BOTTOM) {
-      pdf.addPage();
-      pdf.setFont('courier', 'normal').setFontSize(fontSize);
-      y = TOP + 4;
+  const files = data.files ?? [{ name: `${data.fileStem ?? 'my-hobby-page'}.html`, code: data.code }];
+  for (const [n, file] of files.entries()) {
+    pdf.addPage();
+    heading(files.length > 1 ? `My code: ${file.name}` : 'My code', TOP + 6);
+    const rows = codeRows(file.code, Math.floor((WIDTH - gutter) / charW));
+    const lineCount = rows.filter((r) => r.line !== null).length;
+    pdf.setFont('helvetica', 'normal').setFontSize(10).setTextColor(...MUTED);
+    pdf.text(`${file.name}, ${lineCount} ${lineCount === 1 ? 'line' : 'lines'}${files.length > 1 ? ` (file ${n + 1} of ${files.length})` : ''}`, MARGIN, TOP + 12);
+    y = TOP + 20;
+    pdf.setFont('courier', 'normal').setFontSize(fontSize);
+    for (const row of rows) {
+      if (y > BOTTOM) {
+        pdf.addPage();
+        pdf.setFont('courier', 'normal').setFontSize(fontSize);
+        y = TOP + 4;
+      }
+      if (row.line !== null) {
+        pdf.setTextColor(...MUTED);
+        pdf.text(String(row.line), MARGIN + gutter - 3, y, { align: 'right' });
+      }
+      pdf.setTextColor(...NAVY);
+      pdf.text(row.text, MARGIN + gutter, y);
+      y += rowH;
     }
-    if (row.line !== null) {
-      pdf.setTextColor(...MUTED);
-      pdf.text(String(row.line), MARGIN + gutter - 3, y, { align: 'right' });
-    }
-    pdf.setTextColor(...NAVY);
-    pdf.text(row.text, MARGIN + gutter, y);
-    y += rowH;
   }
 
   /* -------------------------------------------- header and footer */
@@ -289,12 +322,12 @@ export async function downloadReport(data: ReportData): Promise<string> {
     pdf.setFont('helvetica', 'bold').setFontSize(9).setTextColor(...NAVY);
     pdf.text('NA<>Y BUILDS', MARGIN, 12);
     pdf.setFont('helvetica', 'normal').setTextColor(...MUTED);
-    pdf.text(name ? `My hobby page report: ${name}` : 'My hobby page report', PAGE_W - MARGIN, 12, { align: 'right' });
+    pdf.text(name ? `${docTitle} report: ${name}` : `${docTitle} report`, PAGE_W - MARGIN, 12, { align: 'right' });
     pdf.setDrawColor(...GOLD).setLineWidth(0.8).line(MARGIN, 15, PAGE_W - MARGIN, 15);
     pdf.text(`Page ${p} of ${pages}`, PAGE_W - MARGIN, PAGE_H - 8, { align: 'right' });
   }
 
-  const file = reportFileName(data.name);
+  const file = reportFileName(data.name, data.fileStem);
   pdf.save(file);
   return file;
 }

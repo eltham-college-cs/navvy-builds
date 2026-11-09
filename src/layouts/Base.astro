@@ -15,8 +15,10 @@ interface Props {
   current?: 'home' | 'help' | 'lesson';
   /** Full-height app layout (the builder), with no page scroll on a laptop. */
   app?: boolean;
+  /** Extra class on body, e.g. "sixth" for the Sixth Form lesson. */
+  bodyClass?: string;
 }
-const { title, description = 'Practise HTML and CSS, level by level.', current, app = false } = Astro.props;
+const { title, description = 'Practise HTML and CSS, level by level.', current, app = false, bodyClass } = Astro.props;
 const fullTitle = title === 'Na<>y Builds' ? title : `${title} · Na<>y Builds`;
 ---
 <!doctype html>
@@ -29,7 +31,7 @@ const fullTitle = title === 'Na<>y Builds' ? title : `${title} · Na<>y Builds`;
     <title>{fullTitle}</title>
     <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
   </head>
-  <body class:list={{ app }}>
+  <body class:list={[{ app }, bodyClass]}>
     <a class="skip-link" href="#main">Skip to content</a>
     <SiteHeader current={current}><slot name="header" /></SiteHeader>
     <main id="main" tabindex="-1">

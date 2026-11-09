@@ -2,13 +2,18 @@
 
 An HTML and CSS practice site for Eltham College. Students write code in a
 panel, see a live preview, and get instant, friendly feedback from automatic
-checks. The first release is one 60-minute lesson: a Year 8 recap, where each
-student builds a web page about their own hobby, level by level.
+checks. Two lessons: a Year 8 recap, where each student builds a web page
+about their own hobby, and a Sixth Form lesson (OCR A Level H446, 1.3.4 web
+technologies) where students build a small web app in HTML, CSS and
+JavaScript and try Fix, Trace and Exam challenges on code they didn't write.
 
 Read `docs/SPEC.md` before writing any code. It is the source of truth.
+`docs/SPEC-SIXTH-FORM.md` extends it for the Sixth Form lesson.
 `src/content/lessons/01-my-hobby-page/lesson.json` holds every level, check
-and hint for lesson 1. `design/` holds the approved logo and look as reference
-HTML: match it, do not ship those files.
+and hint for lesson 1; `02-web-app/lesson.json` does the same for the Sixth
+Form lesson (`src/lib/web-builder.ts`, `src/checker/webapp.ts`). `design/`
+holds the approved logo and look as reference HTML: match it, do not ship
+those files.
 
 ## Stack
 
@@ -21,8 +26,12 @@ HTML: match it, do not ship those files.
 
 - No student data leaves the browser. No accounts, analytics or cookies.
   Work is saved in `localStorage` only.
-- The preview iframe uses `sandbox="allow-same-origin"` and never `allow-scripts`.
-- Model answers are never shipped on the site. Hints only.
+- Preview iframes with `allow-same-origin` never get `allow-scripts`. Student
+  JavaScript (Sixth Form only) runs in the runner frame, which has
+  `sandbox="allow-scripts allow-forms"` and never `allow-same-origin`, and
+  talks to the site only through `postMessage` (`src/checker/harness.ts`).
+- Model answers are never shipped on the site. Hints only. Sixth Form exam
+  mark schemes are the one exception, shown only after the student answers.
 - Every animation respects `prefers-reduced-motion`.
 - British English in all copy; sentence case for buttons and headings.
   Code examples use real CSS spelling (`color`), and the checker explains why.

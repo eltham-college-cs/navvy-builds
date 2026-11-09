@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import BriefPicker from '../../../components/BriefPicker.astro';
 import HobbyPicker from '../../../components/HobbyPicker.astro';
 import LevelMap from '../../../components/LevelMap.astro';
 import Mascot from '../../../components/Mascot.astro';
@@ -16,45 +17,57 @@ export async function getStaticPaths() {
 const { lesson, number } = Astro.props as { lesson: Lesson; number: number };
 const levels = lesson.levels.map((l) => ({ id: l.id, title: l.title }));
 const levelCount = lesson.levels.filter((l) => l.id !== 'boss').length;
+const sixth = !!lesson.briefs;
+const term = sixth ? 'brief' : 'hobby';
+const yearLabel = sixth ? 'Sixth Form' : `Year ${lesson.year}`;
 ---
 <Base title={lesson.title} current="lesson" description={lesson.summary}>
   <div class="wrap lesson-page">
     <section class="card hero">
       <div class="text">
-        <p class="eyebrow">Year {lesson.year} · Lesson {number} · about {lesson.minutes} minutes</p>
+        <p class="eyebrow">{yearLabel} · Lesson {number} · about {lesson.minutes} minutes</p>
         <h1>{lesson.title}</h1>
         <p class="summary">{lesson.summary}</p>
-        <p>{levelCount} levels, then a boss level if you finish early. {config.mascot.name} will cheer you on.</p>
+        <p>{sixth ? `${levelCount} levels across index.html, style.css and script.js, then an exam-style boss level.` : `${levelCount} levels, then a boss level if you finish early.`} {config.mascot.name} will cheer you on.</p>
       </div>
       <Mascot size={150} mood="happy" />
     </section>
 
     <section aria-labelledby="hobby-heading" class="step">
-      <h2 id="hobby-heading"><span class="step-num pixel" aria-hidden="true">1</span> Choose your hobby</h2>
-      <p>Your page will be about this. You can change it later.</p>
-      <HobbyPicker hobbies={lesson.hobbies} />
+      <h2 id="hobby-heading"><span class="step-num pixel" aria-hidden="true">1</span> Choose your {term}</h2>
+      {sixth ? (
+        <>
+          <p>You'll build this app. Everyone learns the same HTML, CSS and JavaScript; the brief changes what your app does. You can change it later.</p>
+          <BriefPicker briefs={lesson.briefs!} />
+        </>
+      ) : (
+        <>
+          <p>Your page will be about this. You can change it later.</p>
+          <HobbyPicker hobbies={lesson.hobbies!} />
+        </>
+      )}
     </section>
 
     <section aria-labelledby="map-heading" class="step" id="map">
       <h2 id="map-heading"><span class="step-num pixel" aria-hidden="true">2</span> Play the levels</h2>
-      <p>Each level adds to the same page. Clear one to unlock the next.</p>
+      <p>{sixth ? 'Each level adds to the same app. Clear its goals and try its challenges to unlock the next.' : 'Each level adds to the same page. Clear one to unlock the next.'}</p>
       <p class="notice" role="status" data-notice hidden></p>
       <LevelMap lessonId={lesson.id} levels={levels} label="Level map" />
       <div class="go">
         <a class="btn btn-gold btn-big" href={url(`lessons/${lesson.id}/play/`)} data-start aria-disabled="true">Start building</a>
-        <p class="go-note" data-go-note>Choose a hobby first.</p>
+        <p class="go-note" data-go-note>Choose a {term} first.</p>
       </div>
     </section>
   </div>
 
-  <script type="application/json" id="lesson-meta" set:html={JSON.stringify({ id: lesson.id, levels: levels.map((l) => l.id) })} />
+  <script type="application/json" id="lesson-meta" set:html={JSON.stringify({ id: lesson.id, levels: levels.map((l) => l.id), term })} />
 </Base>
 
 <script>
   import { applyLevelMap, guardLockedLinks } from '../../../lib/level-map';
   import { currentIndex, loadProgress, saveProgress, type LevelId } from '../../../lib/progress';
 
-  const meta = JSON.parse(document.getElementById('lesson-meta')!.textContent!) as { id: string; levels: LevelId[] };
+  const meta = JSON.parse(document.getElementById('lesson-meta')!.textContent!) as { id: string; levels: LevelId[]; term: string };
   const progress = loadProgress(meta.id);
   const picker = document.querySelector<HTMLElement>('[data-hobby-picker]')!;
   const tiles = Array.from(picker.querySelectorAll<HTMLButtonElement>('.tile'));
@@ -80,7 +93,7 @@ const levelCount = lesson.levels.filter((l) => l.id !== 'boss').length;
     start.href = `${playHref}#level-${id}`;
     if (hobby === null) {
       start.setAttribute('aria-disabled', 'true');
-      goNote.textContent = 'Choose a hobby first.';
+      goNote.textContent = `Choose a ${meta.term} first.`;
       goNote.hidden = false;
     } else {
       start.removeAttribute('aria-disabled');
@@ -119,7 +132,7 @@ const levelCount = lesson.levels.filter((l) => l.id !== 'boss').length;
       if (progress.hobby === null && block.dataset.state !== 'locked') {
         e.preventDefault();
         notice.hidden = false;
-        notice.textContent = 'Choose your hobby first, then start level 1.';
+        notice.textContent = `Choose your ${meta.term} first, then start level 1.`;
         tiles[0].focus();
       }
     }),
@@ -132,7 +145,7 @@ const levelCount = lesson.levels.filter((l) => l.id !== 'boss').length;
     notice.textContent = `${locked === 'boss' ? 'The boss level' : `Level ${locked}`} is still locked. Carry on from the level map below.`;
   } else if (params.get('need') === 'hobby') {
     notice.hidden = false;
-    notice.textContent = 'Choose your hobby first, then start building.';
+    notice.textContent = `Choose your ${meta.term} first, then start building.`;
     tiles[0].focus();
   }
   render();

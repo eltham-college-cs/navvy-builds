@@ -218,7 +218,7 @@ export function startBuilder(data: BuilderData): void {
       }),
     );
 
-    const usesImages = level.goals.some((g) => g.checks.some((c) => 'selector' in c && /\bimg\b/.test(c.selector)));
+    const usesImages = level.goals.some((g) => g.checks.some((c) => 'selector' in c && /\bimg\b/.test(c.selector ?? '')));
     library.open = usesImages;
 
     applyLevelMap(document, ids, progress.completed, level.id);
@@ -490,7 +490,7 @@ export function startBuilder(data: BuilderData): void {
   });
 
   /* ----------------------------------------------------- image library */
-  const pictureSet = !isOpenHobby(hobby) && lesson.hobbies.includes(hobby) ? hobby : 'other';
+  const pictureSet = !isOpenHobby(hobby) && (lesson.hobbies ?? []).includes(hobby) ? hobby : 'other';
   const copyStatus = $('[data-copy-status]');
   $('[data-pictures]').replaceChildren(
     ...Array.from({ length: data.imagesPerHobby }, (_, i) => {
