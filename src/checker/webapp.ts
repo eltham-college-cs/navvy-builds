@@ -186,6 +186,12 @@ export interface WebContext {
   levelIndex: number;
   env?: StyleEnv;
   runtime?: Runtime;
+  /**
+   * Run a brief's tests from this level instead of the level being checked.
+   * Level 8 re-checks earlier levels against the app as it is now, so the
+   * function must meet its newest tests, not the ones level 7 replaced.
+   */
+  briefTestsLevel?: string;
 }
 
 const RUNTIME_CHECKS = new Set(['js-call', 'js-event', 'js-no-error']);
@@ -195,7 +201,7 @@ export async function runWebCheck(raw: Check, project: Project, ctx: WebContext)
   const { files, page, css, brief } = project;
   // Selectors and names can use {inputName}, {fn} and so on.
   const check = JSON.parse(fillBrief(JSON.stringify(raw), brief)) as Check;
-  const levelId = String(ctx.lesson.levels[ctx.levelIndex].id);
+  const levelId = ctx.briefTestsLevel ?? String(ctx.lesson.levels[ctx.levelIndex].id);
   switch (check.type) {
     case 'file-exists':
       return files[check.file] !== undefined ? pass() : fail(`Create ${check.file} first.`);
@@ -246,9 +252,17 @@ export async function runWebCheck(raw: Check, project: Project, ctx: WebContext)
       return checkEvent(ctx.runtime, check, brief, tests);
     }
     case 'allPrevious': {
+      // The newest earlier level whose brief tests exist (level 7 replaces level 6's).
+      const newest = ctx.lesson.levels
+        .slice(0, ctx.levelIndex)
+        .map((l) => String(l.id))
+        .filter((id) => brief.tests[id])
+        .pop();
       for (let i = 0; i < ctx.levelIndex; i++) {
         const level = ctx.lesson.levels[i];
-        const r = await runWebLevel(project, { ...ctx, levelIndex: i });
+        const own = String(level.id);
+        const briefTestsLevel = brief.tests[own] && newest ? newest : undefined;
+        const r = await runWebLevel(project, { ...ctx, levelIndex: i, briefTestsLevel });
         const broken = r.goals.find((g) => !g.pass && !g.pending && !g.stretch);
         if (broken) return { ...broken, message: `Level ${level.id} (${level.title}) needs fixing: ${broken.message ?? broken.text}` };
       }

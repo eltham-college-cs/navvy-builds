@@ -272,3 +272,25 @@ describe('every brief can be solved', () => {
     }
   }
 });
+
+describe('level 8 re-checks earlier levels', () => {
+  const grades = lesson.briefs!.find((b) => b.id === 'grades')!;
+  const files: Files = {
+    'index.html': "<!DOCTYPE html>\n<html>\n<head>\n  <title>Grade Calculator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <div id=\"menu\">\n    <h1>Grade Calculator</h1>\n  </div>\n  <p>This app turns an exam mark out of 100 into a grade.</p>\n  <div class=\"infoBox\">Type a mark below and press Grade.</div>\n  <h2>Grade boundaries</h2>\n  <h3>From A* down to U</h3>\n  <ul>\n    <li>90 or more is an A*</li>\n    <li>40 to 49 is an E</li>\n    <li>Below 40 is a U</li>\n  </ul>\n  <img src=\"images/reading-1.png\" alt=\"A pile of exam papers and a pen\" height=\"150\" width=\"200\">\n  <p>Find out more on this useful website: <a href=\"https://www.ocr.org.uk/\">OCR, the exam board</a></p>\n  <p style=\"color:#555555;\">Real grade boundaries change every year, so these are examples.</p>\n  <form id=\"app\">\n    <input type=\"text\" name=\"mark\">\n    <input type=\"submit\" value=\"Grade\">\n  </form>\n  <div id=\"result\" class=\"infoBox\"></div>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+    'style.css': "body {\n  font-family: Verdana, sans-serif;\n  background-color: #F4F7FB;\n}\n\nh1 {\n  color: white;\n  font-size: 32px;\n}\n\n#menu {\n  background-color: #163351;\n}\n\n.infoBox {\n  border-style: solid;\n  border-width: 3px;\n  border-color: gold;\n  width: 320px;\n  height: 60px;\n}\n",
+    'script.js': "const bounds = [90, 80, 70, 60, 50, 40];\nconst grades = [\"A*\", \"A\", \"B\", \"C\", \"D\", \"E\"];\n\nfunction getGrade(mark) {\n  for (let i = 0; i < bounds.length; i++) {\n    if (mark >= bounds[i]) {\n      return grades[i];\n    }\n  }\n  return \"U\";\n}\n\nconst form = document.getElementById(\"app\"); // given\nform.onsubmit = function () { // given\n  const value = form.mark.value; // given\n  if (value == \"\" || value.length > 3) {\n    alert(\"Type a mark from 0 to 100.\");\n  } else {\n    const grade = getGrade(value);\n    let message;\n    switch (grade) {\n      case \"A*\":\n      case \"A\":\n        message = \"Excellent work.\";\n        break;\n      case \"U\":\n        message = \"Time for some revision.\";\n        break;\n      default:\n        message = \"A solid result.\";\n    }\n    const chosenElement = document.getElementById(\"result\");\n    chosenElement.innerHTML = \"Grade: \" + grade + \". \" + message;\n  }\n  return false; // given\n}; // given\n",  };
+  const getGrade = new Function(`${SOLUTIONS.grades['7']}\n;return getGrade;`)() as (m: string) => string;
+  // The fake runtime runs script.js without a page, so give it just the function.
+  const runtime = fakeRuntime({ 'script.js': SOLUTIONS.grades['7'] }, (v) => ({ target: { found: true, text: `Grade: ${getGrade(v)}` } }));
+
+  it('uses the newest brief tests, so a level 7 grade calculator still passes', async () => {
+    const r = await runWebLevel(prepareProject(files, grades), { lesson, levelIndex: index(8), runtime });
+    expect(r.goals[0].message ?? '').toBe('');
+    expect(r.goals[0].pass).toBe(true);
+  });
+
+  it('would fail level 6 on its own tests', async () => {
+    const r = await runWebLevel(prepareProject(files, grades), { lesson, levelIndex: index(6), runtime });
+    expect(r.goals[1].message).toMatch(/should return "Fail"/);
+  });
+});
